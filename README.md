@@ -42,7 +42,9 @@ Contains codes to reproduce simulations and figures of the supplementary materia
 
 * **over_estim_var.R** and **under_estim_var.R** produce the results displayed in Figure S1 
 
-* **adj_pval_comp.R** and **power_comp_merge.R** produce the results displayer in Figure S3
+* **adj_pval_comp.R** and **power_comp_merge.R** produce the results displayed in Figure S3
+
+* **multimode_power_delta.R**, **mulitmode_power_n.R** and **multimode_unimodal_case.R** produce the results displayed in Figure S4
 
 #### simulations-results 
 
@@ -50,7 +52,13 @@ Contains codes to reproduce simulations and figures of the supplementary materia
 
 * **pval_merge_bonf_H0.csv**, **pval_merge_bonf_H1.csv**, **pval_merge_geo_H0.csv**, **pval_merge_geo_H1.csv**, **pval_merge_harm_H0.csv** and **pval_merge_harm_H1.csv** : results of **adj_pval_comp.R**
 
-* **power_comp_merge_bonf.csv**, **power_comp_merge_geo.csv** and **power_comp_merge_harm.csv** : reslts of **power_comp_merge.R**
+* **power_comp_merge_bonf.csv**, **power_comp_merge_geo.csv** and **power_comp_merge_harm.csv** : results of **power_comp_merge.R**
+
+* **multimode_test_power.csv** : results of **multimode_power_delta.R**
+
+* **multimode_test_power_n.csv** and **time_multimode.csv** : results of **mulitmode_power_n.R**
+
+* **multimode_test_unimodale_gaussian.csv** and **multimode_test_unimodale_uniform.csv** : results of **multimode_unimodal_case.R**
 
 #### figures-codes
 Contains codes to generate the figures presented in the supplementary material 
