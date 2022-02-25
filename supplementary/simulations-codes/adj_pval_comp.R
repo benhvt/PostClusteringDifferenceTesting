@@ -7,16 +7,16 @@ library(dplyr)
 # Function to be used
 
 #Filename 
-filename_rH0.harm <- paste0("result_r/Supplementary/pval_merge_harm_H0", ".csv")
-filename_rH0.geo <- paste0("result_r/Supplementary/pval_merge_geo_H0", ".csv")
-filename_rH0.bonf <- paste0("result_r/Supplementary/pval_merge_bonf_H0", ".csv")
+filename_rH0.harm <- paste0("supplementary/simulations-results/pval_merge_harm_H0", ".csv")
+filename_rH0.geo <- paste0("supplementary/simulations-results/pval_merge_geo_H0", ".csv")
+filename_rH0.bonf <- paste0("supplementary/simulations-results/pval_merge_bonf_H0", ".csv")
 
-filename_rH1.harm <- paste0("result_r/Supplementary/pval_merge_harm_H1", ".csv")
-filename_rH1.geo <- paste0("result_r/Supplementary/pval_merge_geo_H1", ".csv")
-filename_rH1.bonf <- paste0("result_r/Supplementary/pval_merge_bonf_H1", ".csv")
+filename_rH1.harm <- paste0("supplementary/simulations-results/pval_merge_harm_H1", ".csv")
+filename_rH1.geo <- paste0("supplementary/simulations-results/pval_merge_geo_H1", ".csv")
+filename_rH1.bonf <- paste0("supplementary/simulations-results/pval_merge_bonf_H1", ".csv")
 
 
-filename_rtime_adj <- paste0("result_r/time_adj", ".csv")
+filename_rtime_adj <- paste0("supplementary/simulations-results/time_adj", ".csv")
 
 
 #Functions 
