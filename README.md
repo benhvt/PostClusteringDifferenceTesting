@@ -46,6 +46,8 @@ Contains codes to reproduce simulations and figures of the supplementary materia
 
 * **multimode_power_delta.R**, **mulitmode_power_n.R** and **multimode_unimodal_case.R** produce the results displayed in Figure S4
 
+* **time.R** produce the results displayed in Figure S5
+
 #### simulations-results 
 
 * **estim_var.csv** and **estim_var_under.csv** : results of **over_estim_var.R** and **under_estim_var.R**
@@ -59,6 +61,8 @@ Contains codes to reproduce simulations and figures of the supplementary materia
 * **multimode_test_power_n.csv** and **time_multimode.csv** : results of **mulitmode_power_n.R**
 
 * **multimode_test_unimodale_gaussian.csv** and **multimode_test_unimodale_uniform.csv** : results of **multimode_unimodal_case.R**
+
+* **time_dip_2cl.csv**, **time_dip_4cl.csv**, **time_SI_2cl.csv**, **time_SI_4cl.csv** and  **time_merge_2cl.csv**,**time_merge_4cl.csv** : results of **time.R**
 
 #### figures-codes
 Contains codes to generate the figures presented in the supplementary material 
