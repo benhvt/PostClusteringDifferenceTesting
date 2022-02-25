@@ -22,8 +22,8 @@ muH1X2 <- c(0,0,10)
 
 # Save results
 pval_fig2H0 <- pval_fig2H1 <- matrix(NA, nrow = nsimu, ncol = 24)
-filename_rH0 <- paste0("result_r/simuH0", ".csv")
-filename_rH1 <- paste0("result_r/simuH1",".csv")
+filename_rH0 <- paste0("simulations-results/simuH0", ".csv")
+filename_rH1 <- paste0("simulations-results/simuH1",".csv")
 
 
 for (i in 1:nsimu){
