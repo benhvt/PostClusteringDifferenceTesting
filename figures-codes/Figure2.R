@@ -1,3 +1,5 @@
+# Figure 2
+
 library(ggplot2)
 library(RColorBrewer)
 library(wesanderson)
@@ -88,6 +90,7 @@ pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill =
         strip.text = element_text(size=12))
 pbehav_res +  ggtitle("Results for 2000 simualtions of the data")
 
+# Make figures 
 pbehav <- pbehav_illu / pbehav_res + 
   plot_layout(heights = c(1, 2), widths = c(2,1)) + 
   plot_annotation(tag_levels = 'A')  & theme(plot.tag = element_text(face = 'bold')) 
