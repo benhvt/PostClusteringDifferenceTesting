@@ -72,6 +72,6 @@ Contains the main figures of the supplementary materials generated using codes i
 
 ## Notes 
 
-1. Simulations were performe on CURTA 
+1. Simulations were performed on CURTA 
 
 2. Data used in the real analysis could be found in the [`palmerpenguins` package](https://cran.r-project.org/web/packages/palmerpenguins/index.html)
