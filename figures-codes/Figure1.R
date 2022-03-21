@@ -28,16 +28,18 @@ X$Cluster <- as.factor(hcl2(X$X1))
 
 ppb_illu_0cl <- ggplot(X) + aes(x=X1) + 
   geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
-  geom_density(fill = "grey", colour = "grey", alpha = 0.2) +
+  geom_density(fill = "grey", colour = "black", alpha = 0.2) +
   ylab("Density") +
   theme(axis.title = element_text(size = 14))
 ppb_illu_0cl 
 
 ppb_illu_2cl <- ggplot(X) + aes(x=X1, fill = Cluster, colour = Cluster) + 
   geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
-  geom_density(alpha = 0.2) +
-  scale_colour_manual(values = pal_illu) +
-  scale_fill_manual(values = pal_illu) +
+  scale_colour_manual(values = pal_illu) +  
+  scale_fill_manual(values = pal_illu) +  
+  ggnewscale::new_scale_colour() +
+  geom_density(data = X, aes(x=X1, fill = Cluster, colour = Cluster), alpha = 0.2) +
+  scale_colour_manual(values = c("#1c4941","#706c1b")) +
   ylab("Density") +
   theme(legend.position = c(0.85, 0.6), 
         axis.title = element_text(size = 14))
