@@ -34,11 +34,12 @@ X_2cl$NbClust <- "2 clusters"
 X <- rbind(X_4cl, X_2cl)
 ppower_illu <- ggplot(X) +  aes(x=X1, fill = Cluster, colour = Cluster) + 
   geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
-  geom_density(alpha = 0.4) +
   geom_vline(xintercept = mu, colour = "orange", linetype = "dashed", size = 0.9) +
   facet_grid(~NbClust, scale = "free", drop = T) +
-  scale_colour_manual(name = "Cluster", values = c(pal_illu)) +
   scale_fill_manual(name = "Cluster", values = c(pal_illu)) +
+  #+ ggnewscale::new_scale_colour() +
+  geom_density(data = X, aes(x=X1, fill = Cluster, colour = Cluster), alpha = 0.4, size=.8) +
+  scale_colour_manual(name = "Cluster", values = c("#22574e", "#b4ad2b", "#b37c56", "#9a2a04")) +
   ylab("Density") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
