@@ -223,4 +223,4 @@ p_cluster <- plot_grid(p_dend, p_perf, ncol=2)
 p_appli <- phistspecies_legend / p_cluster + 
   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 p_appli
-ggsave(p_appli, file = "figures/figure4.pdf", dpi = 600, width = 300, height = 200, units = "mm")
+ggsave(p_appli, file = "figures/figure4.pdf", dpi = 600, width = 330, height = 220, units = "mm")
