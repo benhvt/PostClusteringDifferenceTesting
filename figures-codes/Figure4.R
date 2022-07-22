@@ -19,192 +19,192 @@ data("penguins")
 penguins_NA <- na.omit(penguins)
 pal_clust3  <- MetBrewer::met.brewer("Egypt", n=3, type = "discrete")
 pal_appli<- MetBrewer::met.brewer("Cross", n=3, type = "discrete")
-
+pal_dens <-  c("#AD5748", "#C38A28", "#395E66")
 penguins_scale <- penguins_NA
 penguins_scale[,3:6] <- scale(penguins_scale[,3:6])
 
-# pspeciesbilllength <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"), 
-#                                                 aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                                                 colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Adelie"), 
-#                aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[1]) +
-#   scale_fill_manual(name = "", values = pal_appli[1]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Gentoo"), 
-#                  aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Gentoo"), 
-#                aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[3]) +
-#   scale_fill_manual(name = "", values = pal_appli[3]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Chinstrap"), 
-#                  aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Chinstrap"), 
-#                aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[2]) +
-#   scale_fill_manual(name = "", values = pal_appli[2]) +
-#   xlab("bill length (scaled)") +
-#   ylab("Density") +
-#   theme_classic() +
-#   theme(legend.position = "bottom", 
-#         axis.title = element_text(size = 16))
-# 
-# 
-# pspeciesbilldepth <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"), 
-#                                                aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                                                colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Adelie"), 
-#                aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[1]) +
-#   scale_fill_manual(name = "", values = pal_appli[1]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Gentoo"), 
-#                  aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Gentoo"), 
-#                aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[3]) +
-#   scale_fill_manual(name = "", values = pal_appli[3]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Chinstrap"), 
-#                  aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Chinstrap"), 
-#                aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[2]) +
-#   scale_fill_manual(name = "", values = pal_appli[2]) +
-#   xlab("bill depth (scaled)") +
-#   ylab("Density") +
-#   theme_classic() +
-#   theme(legend.position = "bottom", 
-#         axis.title = element_text(size = 16))
-# 
-# 
-# pspeciesflipperlength <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"), 
-#                                                    aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                                                    colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Adelie"), 
-#                aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[1]) +
-#   scale_fill_manual(name = "", values = pal_appli[1]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Gentoo"), 
-#                  aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Gentoo"), 
-#                aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[3]) +
-#   scale_fill_manual(name = "", values = pal_appli[3]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Chinstrap"), 
-#                  aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Chinstrap"), 
-#                aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[2]) +
-#   scale_fill_manual(name = "", values = pal_appli[2]) +
-#   xlab("flipper length (scaled)") +
-#   ylab("Density") +
-#   theme_classic() +
-#   theme(legend.position = "bottom", 
-#         axis.title = element_text(size = 16))
-# 
-# pspeciesbodymass <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Chinstrap"), 
-#                                               aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                                               colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Chinstrap"), 
-#                aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[2]) +
-#   scale_fill_manual(name = "", values = pal_appli[2]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Adelie"), 
-#                  aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                  colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Adelie"), 
-#                aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[1]) +
-#   scale_fill_manual(name = "", values = pal_appli[1]) +
-#   ggnewscale::new_scale_colour() + 
-#   ggnewscale::new_scale_fill() +
-#   geom_histogram(data = subset(penguins_scale, species == "Gentoo"), 
-#                                               aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                                               colour = "white", bins = 25, alpha = 0.6) + 
-#   geom_density(data = subset(penguins_scale, species == "Gentoo"), 
-#                aes(x=body_mass_g, y=..density.., colour = species, fill = species),
-#                alpha = 0.1, size = .8) +
-#   scale_colour_manual(name = "", values = pal_appli[3]) +
-#   scale_fill_manual(name = "", values = pal_appli[3]) +
-#   xlab("body mass (scaled)") +
-#   ylab("Density") +
-#   theme_classic() +
-#   theme(legend.position = "bottom", 
-#         axis.title = element_text(size = 16))
-# 
-# phistspecies <- plot_grid(pspeciesbilllength + theme(legend.position="none", 
-#                                                      plot.margin = margin(7, 7, 7, 17)), 
-#                           pspeciesbilldepth + theme(legend.position="none", 
-#                                                     plot.margin = margin(7, 7, 7, 17)),
-#                           pspeciesflipperlength + theme(legend.position="none", 
-#                                                         plot.margin = margin(7, 7, 7, 17)),
-#                           pspeciesbodymass + theme(legend.position="none", 
-#                                                    plot.margin = margin(7, 7, 7, 17)),
-#                           ncol = 4,
-#                           hjust = -1)
-# # add legend
-# legend <- get_legend(
-#   # create some space to the left of the legend
-#   pspeciesbilllength + theme(legend.box.margin = margin(0, 0, 0, 16))
-# )
-
-melt_penguins_scale <- reshape2:: melt(penguins_scale, measure.vars = 3:6)
-melt_penguins_scale$variable <- stringr::str_replace(melt_penguins_scale$variable, pattern = "_", replacement = " ")
-melt_penguins_scale$variable <- stringr::str_remove(melt_penguins_scale$variable, pattern = "_mm")
-melt_penguins_scale$variable <- stringr::str_remove(melt_penguins_scale$variable, pattern = "_g")
-melt_penguins_scale$variable <- paste(melt_penguins_scale$variable, "(scaled)", sep =" ")
-
-phistspecies <- ggplot(melt_penguins_scale) + aes(x=value, fill = species, colour = species) +
-  geom_histogram(aes(y=..density..), bins = 25, colour = "white", alpha = 0.8) +
-  facet_wrap(~variable, nrow = 1) +
-  scale_fill_manual(values = pal_appli) +
-  ggnewscale::new_scale_colour()+
-  geom_density(data = melt_penguins_scale, aes(x=value, colour = species, fill=species), alpha = .1, size = .8) +
-  scale_colour_manual(values = c("#AD5748", "#C38A28", "#395E66")) +
-  guides(fill= guide_legend("Species"), 
-         colour = guide_legend("Species")) +
+pspeciesbilllength <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"),
+                                                aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+                                                colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Adelie"),
+               aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[1]) +
+  scale_fill_manual(name = "", values = pal_appli[1]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Gentoo"),
+                 aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Gentoo"),
+               aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[3]) +
+  scale_fill_manual(name = "", values = pal_appli[3]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Chinstrap"),
+                 aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Chinstrap"),
+               aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[2]) +
+  scale_fill_manual(name = "", values = pal_appli[2]) +
+  xlab("bill length (scaled)") +
+  ylab("Density") +
   theme_classic() +
-  theme(axis.title = element_text(size = 16),
-        legend.position = "bottom",
-        legend.text = element_text(size = 14),
-        legend.title = element_text(size = 16),
-        strip.text = element_text(size=16)) +
-  xlab("Scaled values") +
-  ylab("Density") 
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 16))
 
+
+pspeciesbilldepth <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"),
+                                               aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+                                               colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Adelie"),
+               aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[1]) +
+  scale_fill_manual(name = "", values = pal_appli[1]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Gentoo"),
+                 aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Gentoo"),
+               aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[3]) +
+  scale_fill_manual(name = "", values = pal_appli[3]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Chinstrap"),
+                 aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Chinstrap"),
+               aes(x=bill_depth_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[2]) +
+  scale_fill_manual(name = "", values = pal_appli[2]) +
+  xlab("bill depth (scaled)") +
+  ylab("") +
+  theme_classic() +
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 16))
+
+
+pspeciesflipperlength <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"),
+                                                   aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+                                                   colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Adelie"),
+               aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[1]) +
+  scale_fill_manual(name = "", values = pal_appli[1]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Gentoo"),
+                 aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Gentoo"),
+               aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[3]) +
+  scale_fill_manual(name = "", values = pal_appli[3]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Chinstrap"),
+                 aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Chinstrap"),
+               aes(x=flipper_length_mm, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[2]) +
+  scale_fill_manual(name = "", values = pal_appli[2]) +
+  xlab("flipper length (scaled)") +
+  ylab("") +
+  theme_classic() +
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 16))
+
+pspeciesbodymass <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Chinstrap"),
+                                              aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+                                              colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Chinstrap"),
+               aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[2]) +
+  scale_fill_manual(name = "", values = pal_appli[2]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Adelie"),
+                 aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+                 colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Adelie"),
+               aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[1]) +
+  scale_fill_manual(name = "", values = pal_appli[1]) +
+  ggnewscale::new_scale_colour() +
+  ggnewscale::new_scale_fill() +
+  geom_histogram(data = subset(penguins_scale, species == "Gentoo"),
+                                              aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+                                              colour = "white", bins = 25, alpha = 0.6) +
+  geom_density(data = subset(penguins_scale, species == "Gentoo"),
+               aes(x=body_mass_g, y=..density.., colour = species, fill = species),
+               alpha = 0.1, size = .8) +
+  scale_colour_manual(name = "", values = pal_dens[3]) +
+  scale_fill_manual(name = "", values = pal_appli[3]) +
+  xlab("body mass (scaled)") +
+  ylab("") +
+  theme_classic() +
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 16))
+
+phistspecies <- plot_grid(pspeciesbilllength + theme(legend.position="none",
+                                                     plot.margin = margin(7, 7, 7, 17)),
+                          pspeciesbilldepth + theme(legend.position="none",
+                                                    plot.margin = margin(7, 7, 7, 17)),
+                          pspeciesflipperlength + theme(legend.position="none",
+                                                        plot.margin = margin(7, 7, 7, 17)),
+                          pspeciesbodymass + theme(legend.position="none",
+                                                   plot.margin = margin(7, 7, 7, 17)),
+                          ncol = 4,
+                          hjust = -1)
+# add legend
 legend <- get_legend(
   # create some space to the left of the legend
-  phistspecies + theme(legend.box.margin = margin(0, 0, 0, 16))
+  pspeciesbilllength + theme(legend.box.margin = margin(0, 0, 0, 16))
 )
+
+# melt_penguins_scale <- reshape2:: melt(penguins_scale, measure.vars = 3:6)
+# melt_penguins_scale$variable <- stringr::str_replace(melt_penguins_scale$variable, pattern = "_", replacement = " ")
+# melt_penguins_scale$variable <- stringr::str_remove(melt_penguins_scale$variable, pattern = "_mm")
+# melt_penguins_scale$variable <- stringr::str_remove(melt_penguins_scale$variable, pattern = "_g")
+# melt_penguins_scale$variable <- paste(melt_penguins_scale$variable, "(scaled)", sep =" ")
+# 
+# phistspecies <- ggplot(melt_penguins_scale) + aes(x=value, fill = species, colour = species) +
+#   geom_histogram(aes(y=..density..), bins = 25, colour = "white", alpha = 0.8) +
+#   facet_wrap(~variable, nrow = 1) +
+#   scale_fill_manual(values = pal_appli) +
+#   ggnewscale::new_scale_colour()+
+#   geom_density(data = melt_penguins_scale, aes(x=value, colour = species, fill=species), alpha = .1, size = .8) +
+#   scale_colour_manual(values = c("#AD5748", "#C38A28", "#395E66")) +
+#   guides(fill= guide_legend("Species"), 
+#          colour = guide_legend("Species")) +
+#   theme_classic() +
+#   theme(axis.title = element_text(size = 16),
+#         legend.position = "bottom",
+#         legend.text = element_text(size = 14),
+#         legend.title = element_text(size = 16),
+#         strip.text = element_text(size=16)) +
+#   xlab("Scaled values") +
+#   ylab("Density") 
+# 
+# legend <- get_legend(
+#   # create some space to the left of the legend
+#   phistspecies + theme(legend.box.margin = margin(0, 0, 0, 16))
+# )
 
 dend <- penguins_NA[,c(3:6)] %>% scale %>% dist %>% 
   hclust(method = "ward.D2") %>% as.dendrogram %>% 
