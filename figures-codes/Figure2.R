@@ -35,13 +35,15 @@ XH1 <- data.frame(X1 = c(rnorm(n/3, mean = muH1X1[1]),
                          rnorm(n/3, mean =muH1X2[3])))
 X<- data.frame(rbind(XH0, XH1), 
                Cluster = as.factor(c(hcl3(XH0), hcl3(XH1))),
-               Hypothesis = c(rep("H0", nrow(XH0)), 
-                              rep("H1", nrow(XH1))))
+               Hypothesis = c(rep("(i)", nrow(XH0)), 
+                              rep("(ii)", nrow(XH1))))
 
 pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
   geom_point() +
   scale_colour_manual(values = c(pal_illu[1], pal_illu[4], pal_illu[3])) +
   facet_wrap(~Hypothesis, scale = "free") +
+  labs(x=expression(X[1]), 
+       y=expression(X[2])) +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
         strip.text = element_text(size=12))
@@ -58,23 +60,23 @@ pval_H0.df <- data.frame(pvalues = c(as.numeric(as.matrix(pval_H0))),
                                     rep("Mulitmodality Test", 6*nsimu),
                                     rep("t-test", 6*nsimu),
                                     rep("Selective Test 2", 6*nsimu)),
-                         Variable = rep(c(rep("X1", 3*nsimu),
-                                          rep("X2", 3*nsimu)),4),
+                         Variable = rep(c(rep("X[1]", 3*nsimu),
+                                          rep("X[2]", 3*nsimu)),4),
                          Test = rep(c(rep("C1vsC2", nsimu),
                                       rep("C1vsC3", nsimu),
                                       rep("C2vsC3",nsimu)),8),
-                         Hypothesis = "H0")
+                         Hypothesis = "(i)")
 pval_H1.df <- data.frame(pvalues = c(as.numeric(as.matrix(pval_H1))),
                          Method = c(rep("Selective Test", 6*nsimu),
                                     rep("Mulitmodality Test", 6*nsimu),
                                     rep("t-test", 6*nsimu),
                                     rep("Selective Test 2", 6*nsimu)),
-                         Variable = rep(c(rep("X1", 3*nsimu),
-                                          rep("X2", 3*nsimu)),4),
+                         Variable = rep(c(rep("X[1]", 3*nsimu),
+                                          rep("X[2]", 3*nsimu)),4),
                          Test = rep(c(rep("C1vsC2", nsimu),
                                       rep("C1vsC3", nsimu),
                                       rep("C2vsC3",nsimu)),8),
-                         Hypothesis = "H1")
+                         Hypothesis = "(ii)")
 pval_2D <- rbind(pval_H0.df, pval_H1.df)
 
 pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill = Method) +
@@ -83,7 +85,7 @@ pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill =
                                                                              r'(Selective test : $p_g^{C_k, C_l}$)',
                                                                              r'(Selective test : $p_g^{C_k:C_l}$)',
                                                                              "t-test"), TeX)) + 
-  facet_grid(Variable~Hypothesis)  +
+  facet_grid(Variable~Hypothesis, labeller=label_parsed)  +
   ylab("p-values") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
@@ -94,4 +96,4 @@ pbehav_res +  ggtitle("Results for 2000 simualtions of the data")
 pbehav <- pbehav_illu / pbehav_res + 
   plot_layout(heights = c(1, 2), widths = c(2,1)) + 
   plot_annotation(tag_levels = 'A')  & theme(plot.tag = element_text(face = 'bold')) 
-ggsave(pbehav, file = "figures/figure2.pdf", dpi = 600, width = 155, height = 232.5, units = "mm")
+ggsave(pbehav, file = "figures/figure2.png", dpi = 600, width = 155, height = 232.5, units = "mm")
