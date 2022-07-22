@@ -41,6 +41,7 @@ ppower_illu <- ggplot(X) +  aes(x=X1, fill = Cluster, colour = Cluster) +
   geom_density(data = X, aes(x=X1, fill = Cluster, colour = Cluster), alpha = 0.4, size=.8) +
   scale_colour_manual(name = "Cluster", values = c("#22574e", "#b4ad2b", "#b37c56", "#9a2a04")) +
   ylab("Density") +
+  xlab(expression(X[1])) +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
         strip.text = element_text(size=12))
