@@ -91,8 +91,9 @@ p_estim_var <- ggplot(pval_var.df)+ stat_qq(aes(sample=pvalues, colour = Estimat
   facet_wrap(~Cas) +
   scale_colour_manual(name = "Variance estimation",  
                       values = c(pal2[2], "#1F456E"), 
-                      labels = lapply(c(r'($\hat{\sigma}^2_g = \frac{1}{|C_k| + |C_l|}\sum_{i\in C_k, C_l}\left(X_{gi} - \bar{X}_g^{C_k, C_l}\right)^2$)',
-                                        r'($\hat{\sigma}^2_g = \frac{1}{n}\sum_{i=1}^n\left(X_{gi}-\bar{X}_g\right)^2$)'), TeX))  +
+                      labels = lapply(c(r'($\hat{\sigma}^2_g = \frac{1}{|C_k| + |C_l|-1}\sum_{i\in C_k, C_l}\left(X_{gi} - \bar{X}_g^{C_k, C_l}\right)^2$)',
+                                        r'($\hat{\sigma}^2_g = \frac{1}{n-1}\sum_{i=1}^n\left(X_{gi}-\bar{X}_g\right)^2$)'), TeX))  +
+  guides(colour = guide_legend(override.aes = list(size=5))) +
   theme(axis.title = element_text(size = 14), 
         strip.text = element_text(size=12), 
         legend.position = "bottom")
@@ -102,4 +103,5 @@ p_pb_var <-plot_grid(p_var_illu, p_estim_var, nrow = 2, labels = "AUTO", rel_wid
 p_pb_var
 
 ggsave(p_pb_var, filename = "supplementary/figures/FigureS1.pdf", dpi = 600, width = 225, height = 337.5, units = "mm")
+ggsave(p_pb_var, filename = "supplementary/figures/FigureS1.png", dpi = 600, width = 225, height = 337.5, units = "mm")
 
