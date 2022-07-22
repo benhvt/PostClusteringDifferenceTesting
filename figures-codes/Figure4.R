@@ -174,7 +174,8 @@ phistspecies <- plot_grid(pspeciesbilllength + theme(legend.position="none",
 # add legend
 legend <- get_legend(
   # create some space to the left of the legend
-  pspeciesbilllength + theme(legend.box.margin = margin(0, 0, 0, 16))
+  pspeciesbilllength + theme(legend.text = element_text(size = 14),
+                             legend.box.margin = margin(0, 0, 0, 16))
 )
 
 # melt_penguins_scale <- reshape2:: melt(penguins_scale, measure.vars = 3:6)
@@ -260,4 +261,4 @@ p_cluster <- plot_grid(p_dend, p_perf, ncol=2)
 p_appli <- phistspecies_legend / (p_dend + p_perf) +
   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 p_appli
-ggsave(p_appli, file = "figures/figure4.pdf", dpi = 600, width = 330, height = 230, units = "mm")
+ggsave(p_appli, file = "figures/figure4.pdf", dpi = 600, width = 320, height = 240, units = "mm")
