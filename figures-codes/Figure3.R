@@ -25,7 +25,7 @@ set.seed(27092021)
 X_4cl <- data.frame(X1= c(rnorm(n/2, mean = mu[1]), rnorm(n/2, mean = mu[2])))
 X_4cl$Cluster <- hcl4(X_4cl$X1)
 X_4cl$NbClust <- "4 clusters"
-X_4cl$Cluster <- forcats::fct_recode(X_4cl$Cluster, "1"="1", "2"="4", "3"="3", "4"="2")
+X_4cl$Cluster <- forcats::fct_recode(X_4cl$Cluster, "1"="1", "2"="4", "3"="2", "4"="3")
 
 X_2cl <- data.frame(X1=X_4cl$X1)
 X_2cl$Cluster <- hcl2(X_2cl$X1)
@@ -36,10 +36,10 @@ ppower_illu <- ggplot(X) +  aes(x=X1, fill = Cluster, colour = Cluster) +
   geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
   geom_vline(xintercept = mu, colour = "orange", linetype = "dashed", size = 0.9) +
   facet_grid(~NbClust, scale = "free", drop = T) +
-  scale_fill_manual(name = "Cluster", values = c(pal_illu)) +
+  scale_fill_manual(name = "Cluster", values = c(pal_illu[c(1,4,2,3)]), breaks = c("1", "2", "3", "4")) +
   #+ ggnewscale::new_scale_colour() +
   geom_density(data = X, aes(x=X1, fill = Cluster, colour = Cluster), alpha = 0.4, size=.8) +
-  scale_colour_manual(name = "Cluster", values = c("#22574e", "#b4ad2b", "#b37c56", "#9a2a04")) +
+  scale_colour_manual(name = "Cluster", values = c("#22574e", "#9a2a04", "#b4ad2b", "#b37c56"), breaks = c("1", "2", "3", "4")) +
   ylab("Density") +
   xlab(expression(X[1])) +
   theme(legend.position = "bottom",
