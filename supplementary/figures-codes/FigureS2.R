@@ -60,7 +60,9 @@ pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
        y=expression(X[2])) +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 15),
-        strip.text = element_text(size=14))
+        strip.text = element_text(size=14),
+        legend.title = element_text(size=14),
+        legend.text = element_text(size = 12))
 pbehav_illu 
 
 
@@ -103,17 +105,19 @@ power.df <- data.frame(Power = c(apply(pvalC1C2.res, 2, function(x){mean(x<0.05)
 p_res <- ggplot(power.df) + aes(x=delta, y = Power, colour = Test) + 
   geom_point(size = 2) + 
   geom_line(size = 0.8) + 
-  scale_colour_manual(values = c("#735bf1", "#50283F")) +
+  scale_colour_manual(values = c("#27046c", "#8a1048")) +
   xlab(TeX(r'($\delta$)')) +
  # ylab(expression(atop("Statistical power at the"~alpha ,"% level")))+
   ylab(TeX(r'(Statistical power at the $\alpha = 5\%$ level)')) +
   guides(colour = guide_legend(TeX(r'(Test on $X_1$)'))) +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 15),
-        strip.text = element_text(size=14))
+        strip.text = element_text(size=14), 
+        legend.title = element_text(size=14),
+        legend.text = element_text(size = 12))
 p_res
 
 # Combine the two figures
 pbehav_illu + p_res + plot_annotation(tag_levels = "A")  + plot_layout(widths = c(6,8))  & theme(plot.tag = element_text(face = 'bold'))
-ggsave(filename = "supplementary/figures/FigureS2.pdf", dpi = 600, height = 125, width = 210, units = "mm")
-      
+ggsave(filename = "supplementary/figures/FigureS2.pdf", dpi = 600, height = 125, width = 260, units = "mm")
+       
