@@ -54,13 +54,13 @@ pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
   scale_colour_manual(values = c("#22574e", "#9a2a04", "#b37c56")) +
   guides(colour = "none") +
   annotate("segment", x = mean(X$X1[X$Cluster==1]), xend = mean(X$X1[X$Cluster==2]), y = 0, yend = 0,
-           colour = "darkorange", size = .9, arrow = arrow(ends = "both")) +
-  annotate('text', x=mean(X$X1[X$Cluster %in% c(1,2)]), y = .4, label = TeX(r'($\delta$)'), size = 6, colour = "darkorange") +
+           colour = "darkorange", size = 1, arrow = arrow(ends = "both")) +
+  annotate('text', x=mean(X$X1[X$Cluster %in% c(1,2)]), y = .6, label = TeX(r'($\delta$)'), size = 8, colour = "darkorange") +
   labs(x=expression(X[1]), 
        y=expression(X[2])) +
   theme(legend.position = "bottom",
-        axis.title = element_text(size = 14),
-        strip.text = element_text(size=12))
+        axis.title = element_text(size = 15),
+        strip.text = element_text(size=14))
 pbehav_illu 
 
 
@@ -103,15 +103,17 @@ power.df <- data.frame(Power = c(apply(pvalC1C2.res, 2, function(x){mean(x<0.05)
 p_res <- ggplot(power.df) + aes(x=delta, y = Power, colour = Test) + 
   geom_point(size = 2) + 
   geom_line(size = 0.8) + 
-  scale_colour_met_d(name = "Johnson") + 
-  xlab(TeX(r'($\delta$)')) + 
+  scale_colour_manual(values = c("#735bf1", "#50283F")) +
+  xlab(TeX(r'($\delta$)')) +
+ # ylab(expression(atop("Statistical power at the"~alpha ,"% level")))+
   ylab(TeX(r'(Statistical power at the $\alpha = 5\%$ level)')) +
   guides(colour = guide_legend(TeX(r'(Test on $X_1$)'))) +
   theme(legend.position = "bottom",
-        axis.title = element_text(size = 14),
-        strip.text = element_text(size=12))
+        axis.title = element_text(size = 15),
+        strip.text = element_text(size=14))
 p_res
 
 # Combine the two figures
-pbehav_illu + p_res + plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face = 'bold'))
-ggsave(filename = "supplementary/figures/FigureS2.pdf", dpi = 600, height = 125, width = 250, units = "mm")
+pbehav_illu + p_res + plot_annotation(tag_levels = "A")  + plot_layout(widths = c(6,8))  & theme(plot.tag = element_text(face = 'bold'))
+ggsave(filename = "supplementary/figures/FigureS2.pdf", dpi = 600, height = 125, width = 210, units = "mm")
+      
