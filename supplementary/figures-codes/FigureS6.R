@@ -100,12 +100,21 @@ p_distri_H0_qq <- ggplot(pval_distri_H0)+ stat_qq(aes(sample=pvalues, colour=Tes
                       values = pal2)+
   theme(strip.text = element_text(size = 12),
         legend.position = "bottom",
-        axis.title = element_text(size = 14))
+        axis.title = element_text(size = 14), 
+        axis.text.x = element_text(size = 10))
 
 
-p_distri <- plot_grid(p_illu_distri, p_distri_H0_qq, nrow = 1,
-                      rel_heights = c(1.5,1),
-                      labels = "AUTO") 
+p_distri <- p_illu_distri + p_distri_H0_qq + plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face = "bold", size = 14)) & theme(legend.position = "bottom",
+                                                                                     legend.text = element_text(size = 12), 
+                                                                                     legend.title = element_text(size = 14),
+                                                                                     strip.text = element_text(size = 12),
+                                                                                     axis.title = element_text(size = 14),
+                                                                                     axis.text.x = element_text(size = 10),
+                                                                                     axis.text.y = element_text(size = 10))
+# plot_grid(p_illu_distri, p_distri_H0_qq, nrow = 1,
+#                       rel_heights = c(1.5,1),
+#                       labels = "AUTO") 
 p_distri
 
 ggsave(p_distri, filename = "supplementary/figures/FigureS6.pdf", 
