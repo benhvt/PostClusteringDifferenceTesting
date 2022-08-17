@@ -72,23 +72,30 @@ p_time <- ggplot(time.df) + aes(x=p, y=Time, colour = Method) + geom_boxplot() +
 p_mean_time <- time.df %>% group_by(Method, NbCluster, p) %>% 
   summarise(Mean_Time = mean(Time)) %>%
   ggplot() + 
-  aes(x=as.numeric(p), y=Mean_Time, colour = Method, linetype = NbCluster) + 
-  geom_point() + 
-  geom_line() +
+  aes(x=as.numeric(p), y=Mean_Time, colour = Method, linetype = Method) + 
+  geom_point(size = 2.5) + 
+  geom_line(size = 1.2) +
   scale_y_continuous(trans = "log10") +
   scale_colour_manual(values = pal2, 
                       labels = lapply(c("Multimodality test", 
                                         r'(Selective test : $p_g^{C_k, C_l}$)',
                                         r'(Selective test : $p_g^{C_k:C_l}$)'), TeX))  +
-  scale_linetype_manual(name="Number of estimated clusters", values = c("longdash", "solid")) +
+  scale_linetype_manual(values = c("dotted", "solid", "dashed"),
+                        labels = lapply(c("Multimodality test", 
+                                          r'(Selective test : $p_g^{C_k, C_l}$)',
+                                          r'(Selective test : $p_g^{C_k:C_l}$)'), TeX)) +
+  facet_wrap(~NbCluster) +
   xlab("Number of dimensions (p)") +
   ylab("Mean time to perform one test (sec)
        log10 scale") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size=14),
         legend.box="vertical") 
 
-#p_mean_time
+p_mean_time
 
 p_res_time <- p_time / p_mean_time +
   plot_layout(heights = c(1, 1.5),
@@ -98,3 +105,5 @@ p_res_time <- p_time / p_mean_time +
 p_res_time
 
 ggsave(p_res_time, filename = "supplementary/figures/FigureS5.pdf", dpi = 600, width = 150, height = 225, units = "mm")
+ggsave(p_mean_time, filename = "supplementary/figures/FigureS5V2.pdf", dpi = 600, width = 225, height = 125, units = "mm")
+  
