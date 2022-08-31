@@ -85,6 +85,7 @@ ppb_res_grid<- plot_grid(ppb_res, legend, nrow = 2, rel_heights = c(5, .9))
 
 
 # Make figure 
+
 ppb_illu <- plot_grid(ppb_illu_0cl, ppb_illu_2cl, nrow = 1, labels = c("A","B"))
 ppb_illu_res<- plot_grid(ppb_illu, ppb_res_grid, ncol = 1, labels = c("", "C"))
 ppb_illu_res
