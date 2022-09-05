@@ -38,10 +38,13 @@ X<- data.frame(rbind(XH0, XH1),
                Hypothesis = c(rep("(i)", nrow(XH0)), 
                               rep("(ii)", nrow(XH1))))
 
+hypothesis.labs <- c("No cluster", "3 clusters")
+names(hypothesis.labs) <- c("(i)", "(ii)")
+
 pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
   geom_point() +
   scale_colour_manual(values = c(pal_illu[1], pal_illu[4], pal_illu[3])) +
-  facet_wrap(~Hypothesis, scale = "free") +
+  facet_wrap(~Hypothesis, scale = "free",  labeller = labeller(Hypothesis = hypothesis.labs)) +
   labs(x=expression(X[1]), 
        y=expression(X[2])) +
   theme(legend.position = "bottom",
@@ -78,14 +81,15 @@ pval_H1.df <- data.frame(pvalues = c(as.numeric(as.matrix(pval_H1))),
                                       rep("C2vsC3",nsimu)),8),
                          Hypothesis = "(ii)")
 pval_2D <- rbind(pval_H0.df, pval_H1.df)
-
+variables.labs <- c('X1', "X2")
+names(variables.labs) <- c("X[1]", "X[2]")
 pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill = Method) +
   geom_boxplot(alpha=.4) +
   scale_discrete_manual(c("color", "fill"), values = pal2, labels = lapply(c("Multimodality test", 
                                                                              r'(Selective test : $p_g^{C_k, C_l}$)',
                                                                              r'(Selective test : $p_g^{C_k:C_l}$)',
                                                                              "t-test"), TeX)) + 
-  facet_grid(Variable~Hypothesis, labeller=label_parsed)  +
+  facet_grid(Variable~Hypothesis, labeller = labeller(Hypothesis = hypothesis.labs, Variable = variables.labs) ) +
   ylab("p-values") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
