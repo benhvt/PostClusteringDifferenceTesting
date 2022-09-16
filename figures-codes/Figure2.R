@@ -81,7 +81,7 @@ pval_H1.df <- data.frame(pvalues = c(as.numeric(as.matrix(pval_H1))),
                                       rep("C2vsC3",nsimu)),8),
                          Hypothesis = "(ii)")
 pval_2D <- rbind(pval_H0.df, pval_H1.df)
-variables.labs <- c('X1', "X2")
+variables.labs <- c(expression("X"[1]), expression("X"[2]))
 names(variables.labs) <- c("X[1]", "X[2]")
 pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill = Method) +
   geom_boxplot(alpha=.4) +
@@ -89,7 +89,7 @@ pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill =
                                                                              r'(Selective test : $p_g^{C_k, C_l}$)',
                                                                              r'(Selective test : $p_g^{C_k:C_l}$)',
                                                                              "t-test"), TeX)) + 
-  facet_grid(Variable~Hypothesis, labeller = labeller(Hypothesis = hypothesis.labs, Variable = variables.labs) ) +
+  facet_grid(Variable~Hypothesis, labeller = labeller(Hypothesis = hypothesis.labs, Variable = label_parsed) ) +
   ylab("p-values") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
