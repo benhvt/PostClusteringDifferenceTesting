@@ -44,7 +44,9 @@ ppower_illu <- ggplot(X) +  aes(x=X1, fill = Cluster, colour = Cluster) +
   xlab(expression(X[1])) +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
-        strip.text = element_text(size=12))
+        strip.text = element_text(size=12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
 ppower_illu+ ggtitle("Experiment")
 
 # Results over 2 000 simulations of the data
@@ -98,7 +100,9 @@ ppower_res <- ggplot(powerfig) +
   ylab("Statistical power") +
   theme(legend.position = "bottom",
         axis.title = element_text(size = 14),
-        strip.text = element_text(size=12))
+        strip.text = element_text(size=12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
 
 ppower_res
 
@@ -108,5 +112,5 @@ ppower <- ppower_illu / ppower_res +
   plot_layout(heights = c(1, 2), widths = c(2,1)) + 
   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 
-ggsave(ppower, file = "figures/figure3.pdf", dpi = 600, width = 180, height = 262.5, units = "mm")
+ggsave(ppower, file = "figures/figure3.pdf", dpi = 600, width = 220, height = 262.5, units = "mm")
 
