@@ -75,7 +75,9 @@ p_distri_H0_box <- ggplot(pval_distri_H0) +
   ggnewscale::new_scale_colour() +
   aes(x=Distribution, y = pvalues, colour = Test) + 
   geom_boxplot() +
-  scale_colour_manual(label = lapply(c("Multimodality test", r'(Selective test : $p_g^{C_k,C_l}$)'), TeX),
+  scale_colour_manual(label =c("Multimodality test",
+                               "Selective test (direct)", 
+                               "Merging selective test"),
                       values = pal2) +
   scale_x_discrete(labels=c("chi2(4)"=expression(chi(4)),
                             "Gamma(4,1)"=expression(Gamma(4,1)),
@@ -96,7 +98,8 @@ p_distri_H0_qq <- ggplot(pval_distri_H0)+ stat_qq(aes(sample=pvalues, colour=Tes
   facet_wrap(~Distribution, labeller= label_parsed) +
   xlim(c(0, 1)) + ylim(c(0, 1)) + theme_classic(base_size=17) +
   
-  scale_colour_manual(label = lapply(c("Multimodality test", r'(Selective test : $p_g^{C_k,C_l}$)'), TeX),
+  scale_colour_manual(label = c("Multimodality test",
+                                "Selective test (direct)"),
                       values = pal2)+
   theme(strip.text = element_text(size = 12),
         legend.position = "bottom",
