@@ -90,9 +90,9 @@ ppower_res <- ggplot(powerfig) +
   geom_point(data=powerfig[which(powerfig$Method == "Selective inference (Direct)"),],
              aes(x=delta, y=power, colour = Method)) +
   scale_colour_manual(values = c(pal2, "#cad3fa"), 
-                      labels = lapply(c("Multimodality test", 
-                                        r'(Selective test : $p_g^{C_k, C_l}$)',
-                                        r'(Selective test : $p_g^{C_k:C_l}$)'), TeX))  +
+                      labels = c("Multimodality test",
+                                 "Selective test (direct)",
+                                 "Merging selective test"))  +
   facet_wrap(~NbClust) +
   xlab(TeX(r'($\delta$)')) +
   ylab("Statistical power") +
@@ -108,5 +108,5 @@ ppower <- ppower_illu / ppower_res +
   plot_layout(heights = c(1, 2), widths = c(2,1)) + 
   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 
-ggsave(ppower, file = "figures/figure3.pdf", dpi = 600, width = 175, height = 262.5, units = "mm")
+ggsave(ppower, file = "figures/figure3.pdf", dpi = 600, width = 180, height = 262.5, units = "mm")
 
