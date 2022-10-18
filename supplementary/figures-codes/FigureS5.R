@@ -59,9 +59,9 @@ time.df <- data.frame(Time = as.numeric(as.matrix(time_res[,1:11])),
 
 p_time <- ggplot(time.df) + aes(x=p, y=Time, colour = Method) + geom_boxplot() + facet_wrap(~NbCluster) +
   scale_colour_manual(values = pal2, 
-                      labels = lapply(c("Multimodality test", 
-                                        r'(Selective test : $p_g^{C_k, C_l}$)',
-                                        r'(Selective test : $p_g^{C_k:C_l}$)'), TeX))  +
+                      labels = c("Multimodality test",
+                                 "Selective test (direct)", 
+                                 "Merging selective test"))  +
   scale_y_continuous(trans = "log10") +
   xlab("Number of dimensions (p)") +
   ylab("Time for one test (sec)
@@ -75,15 +75,16 @@ p_mean_time <- time.df %>% group_by(Method, NbCluster, p) %>%
   aes(x=as.numeric(p), y=Mean_Time, colour = Method, linetype = Method) + 
   geom_point(size = 2.5) + 
   geom_line(size = 1.2) +
-  scale_y_continuous(trans = "log10") +
+  scale_y_continuous(trans = "log10") + 
+  annotation_logticks(sides = "l") +
   scale_colour_manual(values = pal2, 
-                      labels = lapply(c("Multimodality test", 
-                                        r'(Selective test : $p_g^{C_k, C_l}$)',
-                                        r'(Selective test : $p_g^{C_k:C_l}$)'), TeX))  +
+                      labels = c("Multimodality test",
+                                 "Selective test (direct)", 
+                                 "Merging selective test"))  +
   scale_linetype_manual(values = c("dotted", "solid", "dashed"),
-                        labels = lapply(c("Multimodality test", 
-                                          r'(Selective test : $p_g^{C_k, C_l}$)',
-                                          r'(Selective test : $p_g^{C_k:C_l}$)'), TeX)) +
+                        labels = c("Multimodality test",
+                                   "Selective test (direct)", 
+                                   "Merging selective test")) +
   facet_wrap(~NbCluster) +
   xlab("Number of dimensions (p)") +
   ylab("Mean time to perform one test (sec)
