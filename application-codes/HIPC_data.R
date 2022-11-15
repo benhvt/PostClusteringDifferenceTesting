@@ -3,6 +3,7 @@
 # install.packages("cytometree")
 
 library(ggplot2)
+library(GGally)
 library(patchwork)
 library(rstatix)
 library(ggpubr)
@@ -109,6 +110,29 @@ C2C4$pval %>% round(4) %>%
 
 ## Supplementary results 
 
+### Supplementary Figures 
+
+pairplot <- data.frame(HIPC_scale) %>% 
+  data.frame() %>%
+  mutate(`Knwon cell types` = HIPC_sub$label)%>%
+  ggpairs(aes(colour = `Knwon cell types`), 
+          lower = list(continuous = "density", combo = wrap("autopoint", alpha = .5)),
+          upper = list(continuous = wrap("points", alpha = 0.5))) +
+  scale_colour_met_d("Archambault") +
+  scale_fill_met_d("Archambault") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        strip.text  = element_text(size = 16),
+        axis.title = element_text(size = 16),
+        axis.text = element_text(size = 16)) 
+
+ggsave(pairplot, filename = "supplementary/figures/FigureS7.pdf",
+       width = 375, 
+       height = 400, 
+       units = "mm",
+       dpi = 600)
+
+
 ### Supplementary table
 
 pval_results <- data.frame(Markers = rep(colnames(HIPC_scale), 6))
@@ -151,7 +175,7 @@ pval_results %>%
   mutate(`Selective test`, `Selective test` = ifelse(`Selective test`<0.05, paste(`Selective test`, "*", sep = ""),`Selective test`)) %>%
   mutate(`Merging test`, `Merging test` = ifelse(`Merging test`<0.05, paste(`Merging test`, "*", sep = ""), `Merging test`)) %>%
   mutate(`Multimodality test`, `Multimodality test` = ifelse(`Multimodality test`<0.05, paste(`Multimodality test`, "*", sep = ""), `Multimodality test`)) %>%
-  kbl(digits = 4, booktabs = T, longtable = T) %>%
+  kbl(digits = 4, booktabs = T, longtable = T, format = "latex") %>%
   kable_styling(font_size = 30) %>%
   kable_classic(full_width = T, html_font = "Cambria") %>%
   row_spec(0,bold=TRUE) %>%
