@@ -82,4 +82,8 @@ Contains the main figures of the supplementary materials generated using codes i
 
 1. Simulations were performed on CURTA 
 
-2. Data used in the real analysis could be found in the [`palmerpenguins` package](https://cran.r-project.org/web/packages/palmerpenguins/index.html)
+2. Data availability: 
+
+  * Penguins data could be found in the [`palmerpenguins` package](https://cran.r-project.org/web/packages/palmerpenguins/index.html)
+  
+  * HIPC T-cells data could be found in the [`cytometree` package](https://cran.r-project.org/web/packages/cytometree/index.html)
