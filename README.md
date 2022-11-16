@@ -35,34 +35,42 @@ Contains codes to reproduce the real data analysis :
 
 * **positive_data.R** contains the codes needed to reproduce the positive control data analysis (Table 2)
 
+* **HIPC_data.R** contains the codes needed to reproducte HIPC T-cells data analysis (Table 3, Figure 5, Supplementary Figure S7 and )
+
 ### supplementary 
 Contains codes to reproduce simulations and figures of the supplementary material 
 
 #### simulations-codes
 
-* **over_estim_var.R** and **under_estim_var.R** produce the results displayed in Figure S1 
+* **multimode_power_delta.R**, **mulitmode_power_n.R** and **multimode_unimodal_case.R** produce the results displayed in Figure S1
 
-* **adj_pval_comp.R** and **power_comp_merge.R** produce the results displayed in Figure S3
+* **over_estim_var.R** and **under_estim_var.R** produce the results displayed in Figure S2 
 
-* **multimode_power_delta.R**, **mulitmode_power_n.R** and **multimode_unimodal_case.R** produce the results displayed in Figure S4
+* **adj_pval_comp.R** and **power_comp_merge.R** produce the results displayed in Figure S4
 
 * **time.R** produce the results displayed in Figure S5
 
+* **distributional_assumpution.R** produce the results displayed in Figure S6
+
 #### simulations-results 
 
-* **estim_var.csv** and **estim_var_under.csv** : results of **over_estim_var.R** and **under_estim_var.R**
-
-* **pval_merge_bonf_H0.csv**, **pval_merge_bonf_H1.csv**, **pval_merge_geo_H0.csv**, **pval_merge_geo_H1.csv**, **pval_merge_harm_H0.csv** and **pval_merge_harm_H1.csv** : results of **adj_pval_comp.R**
-
-* **power_comp_merge_bonf.csv**, **power_comp_merge_geo.csv** and **power_comp_merge_harm.csv** : results of **power_comp_merge.R**
+* **multimode_test_unimodale_gaussian.csv** and **multimode_test_unimodale_uniform.csv** : results of **multimode_unimodal_case.R**
 
 * **multimode_test_power.csv** : results of **multimode_power_delta.R**
 
 * **multimode_test_power_n.csv** and **time_multimode.csv** : results of **mulitmode_power_n.R**
 
-* **multimode_test_unimodale_gaussian.csv** and **multimode_test_unimodale_uniform.csv** : results of **multimode_unimodal_case.R**
+* **estim_var.csv** and **estim_var_under.csv** : results of **over_estim_var.R** and **under_estim_var.R**
+
+* **suppS2_C1C2.csv** and **suppS2_C2C3.csv**: results of **FigureS1.R**
+
+* **pval_merge_bonf_H0.csv**, **pval_merge_bonf_H1.csv**, **pval_merge_geo_H0.csv**, **pval_merge_geo_H1.csv**, **pval_merge_harm_H0.csv** and **pval_merge_harm_H1.csv** : results of **adj_pval_comp.R**
+
+* **power_comp_merge_bonf.csv**, **power_comp_merge_geo.csv** and **power_comp_merge_harm.csv** : results of **power_comp_merge.R**
 
 * **time_dip_2cl.csv**, **time_dip_4cl.csv**, **time_SI_2cl.csv**, **time_SI_4cl.csv** and  **time_merge_2cl.csv**,**time_merge_4cl.csv** : results of **time.R**
+
+* **pval_distri_H0_dip.csv**, **pval_distri_H0_SI.csv** : results of **distributional_assumpution.R** 
 
 #### figures-codes
 Contains codes to generate the figures presented in the supplementary material 
