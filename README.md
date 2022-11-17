@@ -1,4 +1,4 @@
-# article-experiment
+# Post-clustering difference testing: valid inference and practical considerationswith applications to ecological and biological data
 
 Contains codes to reproduce simulations, figures and analysis of the article 
 
