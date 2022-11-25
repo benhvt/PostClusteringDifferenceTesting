@@ -1,157 +1,123 @@
-#Figure S3
-
+# Figure S3 
 library(ggplot2)
 library(RColorBrewer)
 library(wesanderson)
 library(viridis)
 library(paletteer)
 library(patchwork)
+library(grid)
 library(cowplot)
 library(dplyr)
 library(ggcorrplot)
 library(latex2exp)
 source(file = "utils.R")
+library(VALIDICLUST)
 
 theme_set(theme_bw())
-
 pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
+
+hcl3 <- function(x){
+  clust <- quantile(x[,1], probs = seq(0,1, length.out = 4))
+  cl <- cut(x[,1], clust, include.lowest = T)
+  cl <- factor(cl, labels = 1:3)
+  return(as.factor(cl))
+}
+
+
 pal <- wes_palette("Darjeeling1", 3, type = "continuous")
 pal2 <- c(wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
-pal8 <- c(pal_illu[1], pal_illu[4], pal_illu[3], pal_illu[2], "#D0B49F", "#AB6B51", "#2F435A", "#A47786")
+
+pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
+
+# Illustration
+
+# Parameters 
+n <- 200
+deltaC1C2 <- c(0.5, 1, 1.5, 3, 6, 12, 15, 18, 19, 19.5)
+muX1 <- c(-5, -5+deltaC1C2[5], 15)
+muX2 <- c(0,0, 0)
+
+set.seed(15112021)
+X <- data.frame(X1 = c(rnorm(n/3, mean = muX1[1]),
+                         rnorm(n/3, mean = muX1[2]),
+                         rnorm(n/3, mean = muX1[3])),
+                  X2 = c(rnorm(n/3, mean = muX2[1]),
+                         rnorm(n/3, mean = muX2[2]),
+                         rnorm(n/3, mean =muX2[3])))
+X$Cluster <- hcl3(X[,1:2])
+pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
+  geom_point(alpha = .8) +
+  scale_colour_manual(values = c(pal_illu[1], pal_illu[4], pal_illu[3])) +
+  ggnewscale::new_scale_colour() +
+  geom_vline(data = X %>% group_by(Cluster) %>% summarise(Mean = mean(X1)), aes(xintercept = Mean, colour = Cluster),
+             linetype = "dashed", size = 1.2)+
+  scale_colour_manual(values = c("#22574e", "#9a2a04", "#b37c56")) +
+  guides(colour = "none") +
+  annotate("segment", x = mean(X$X1[X$Cluster==1]), xend = mean(X$X1[X$Cluster==2]), y = 0, yend = 0,
+           colour = "darkorange", size = 1, arrow = arrow(ends = "both")) +
+  annotate('text', x=mean(X$X1[X$Cluster %in% c(1,2)]), y = .6, label = TeX(r'($\delta$)'), size = 8, colour = "darkorange") +
+  labs(x=expression(X[1]), 
+       y=expression(X[2])) +
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 15),
+        strip.text = element_text(size=14),
+        legend.title = element_text(size=14),
+        legend.text = element_text(size = 12))
+pbehav_illu 
 
 
-# Results over 2 000 simulations of the data 
+# Simulation 
+nsimu <- 500
+pvalC1C2 <- pvalC1C3 <- matrix(NA, nrow = nsimu, ncol = length(deltaC1C2))
 
-## Under the null
-K <- 3:7
-nsimu <- 2000
-pval_bonf_H0 <- read.csv(file = "supplementary/simulations-results/pval_merge_bonf_H0.csv")
-pval_geo_H0 <- read.csv(file = "supplementary/simulations-results/pval_merge_geo_H0.csv")
-pval_harm_H0 <- read.csv(file = "supplementary/simulations-results/pval_merge_harm_H0.csv")
-
-K.df <- c()
-for (i in 1:length(K)){
-  K.df <- c(K.df, rep(K[i], nsimu))
+for (i in 1:length(deltaC1C2)){
+  res.simu.delta<- replicate(nsimu, expr = {
+    muX1 <- c(-5, -5+deltaC1C2[i], 15)
+    muX2 <- c(0,0, 0)
+    X <- data.frame(X1 = c(rnorm(n/3, mean = muX1[1]),
+                           rnorm(n/3, mean = muX1[2]),
+                           rnorm(n/3, mean = muX1[3])),
+                    X2 = c(rnorm(n/3, mean = muX2[1]),
+                           rnorm(n/3, mean = muX2[2]),
+                           rnorm(n/3, mean =muX2[3])))
+    X$Cluster <- hcl3(X[,1:2])
+    res1 <- test_selective_inference(as.matrix(X[,1:2]), k1=1, k2=2, g=1, cl_fun = hcl3, cl = X$Cluster)$pval
+    res2 <- test_selective_inference(as.matrix(X[,1:2]), k1=1, k2=3, g=1, cl_fun = hcl3, cl = X$Cluster)$pval
+    c(res1, res2)
+  })
+  pvalC1C2[,i] <- res.simu.delta[1,]
+  pvalC1C3[,i] <- res.simu.delta[2,]
 }
-pval_merge_comp_H0 <- data.frame(pvalues = c(as.numeric(as.matrix(pval_bonf_H0)),
-                                             as.numeric(as.matrix(pval_geo_H0)),
-                                             as.numeric(as.matrix(pval_harm_H0))),
-                                 Method = c(rep("Bonferoni (min)", nrow(pval_bonf_H0)*length(K)),
-                                            rep("Geometric Mean", nrow(pval_geo_H0)*length(K)),
-                                            rep("Harmonic Mean", nrow(pval_harm_H0)*length(K))),
-                                 K = as.factor(paste0("K=",K.df)))
-pval_merge_comp_H0$pvalues <- sapply(pval_merge_comp_H0$pvalues, FUN = function(x){min(x, 1, na.rm=T)})
 
+write.csv(pvalC1C2, file = "supplementary/simulations-results/results_figureS3/3clusters_C1C2_SI_problem.csv", row.names = F)
+write.csv(pvalC1C3, file = "supplementary/simulations-results/results_figureS3/3clusters_C1C3_SI_problem.csv", row.names = F)
 
-p_distri_pval_merge <- ggplot(pval_merge_comp_H0)+ 
-  geom_hline(aes(yintercept = 0.05, colour ="5% level"), linetype = "dashed") +
-  scale_colour_manual(name = " ", values = "red")  +
-  ggnewscale::new_scale_colour() + aes(x=K, y = pvalues, colour = Method) +
-  geom_boxplot() +
-  scale_discrete_manual(name = "Merging function", aesthetics = c("colour"),
-                        values = c("#899D78","#8A1C7C","#735CDD")) + 
-  theme_classic() +
-  xlab("Number of estimated clusters (K)") +
-  ylab("p-values (under H0)") +
-  theme(legend.position = "none",
-        axis.title = element_text(size = 14),
-        strip.text = element_text(size = 12))
+# Figures Results 
 
-fun_FP <- function(x){sum(x<0.05, na.rm = T)/length(na.omit(x))}
-FP_merge_comp <- data.frame(K = rep(K,3), 
-                            FP = c(apply(pval_bonf_H0, 2, 
-                                         fun_FP),
-                                   apply(pval_geo_H0, 2, 
-                                         fun_FP),
-                                   apply(pval_harm_H0, 2, 
-                                         fun_FP)),
-                            Method = c(rep("Bonferoni (min)", length(K)),
-                                       rep("Geometric Mean", length(K)),
-                                       rep("Harmonic Mean", length(K)))) 
+pvalC1C2.res <- read.csv(file = "supplementary/simulations-results/results_figureS3/3clusters_C1C2_SI_problem.csv")
+pvalC1C3.res <- read.csv(file = "supplementary/simulations-results/results_figureS3/3clusters_C1C3_SI_problem.csv")
 
-p_FP_merge <- ggplot(FP_merge_comp) +
-  geom_hline(aes(yintercept = 0.05, colour ="5% level"), linetype = "dashed") +
-  scale_colour_manual(name = " ", values = "red")  +
-  ggnewscale::new_scale_colour() +
-  aes(x=K, y= FP, colour = Method) + 
-  geom_point() + 
-  geom_line() +
-  xlab("Number of estimated clusters (K)") +
-  ylab("False positive rate") +
-  ylim(c(0,1)) +
-  scale_colour_manual(name = "Merging function", values = c("#899D78","#8A1C7C","#735CDD")) +
-  theme(legend.position = "none",
-        axis.title = element_text(size = 14),
-        strip.text = element_text(size = 12))
+power.df <- data.frame(Power = c(apply(pvalC1C2.res, 2, function(x){mean(x<0.05)}),
+                                 apply(pvalC1C3.res, 2, function(x){mean(x<0.05)})),
+                       delta = rep(deltaC1C2, 2), 
+                       Test = rep(c("Cluster 1 vs Cluster 2", "Cluster 1 vs Cluster 3"), each = length(deltaC1C2)))
 
-## Under the alternative 
-pval_bonf_H1 <- read.csv(file = "supplementary/simulations-results/pval_merge_bonf_H1.csv")
-pval_geo_H1 <- read.csv(file = "supplementary/simulations-results/pval_merge_geo_H1.csv")
-pval_harm_H1 <- read.csv(file = "supplementary/simulations-results/pval_merge_harm_H1.csv")
+p_res <- ggplot(power.df) + aes(x=delta, y = Power, colour = Test) + 
+  geom_point(size = 2) + 
+  geom_line(size = 0.8) + 
+  scale_colour_manual(values = c("#f865b0", "#8a1048")) +
+  xlab(TeX(r'($\delta$)')) +
+ # ylab(expression(atop("Statistical power at the"~alpha ,"% level")))+
+  ylab(TeX(r'(Statistical power at the $\alpha = 5\%$ level)')) +
+  guides(colour = guide_legend(TeX(r'(Test on $X_1$)'))) +
+  theme(legend.position = "bottom",
+        axis.title = element_text(size = 15),
+        strip.text = element_text(size=14), 
+        legend.title = element_text(size=14),
+        legend.text = element_text(size = 12))
+p_res
 
-
-pval_merge_comp_H1 <- data.frame(pvalues = c(as.numeric(as.matrix(pval_bonf_H1)),
-                                             as.numeric(as.matrix(pval_geo_H1)),
-                                             as.numeric(as.matrix(pval_harm_H1))),
-                                 Method = c(rep("Bonferoni (min)", nrow(pval_bonf_H1)*length(K)),
-                                            rep("Geometric Mean", nrow(pval_geo_H1)*length(K)),
-                                            rep("Harmonic Mean", nrow(pval_harm_H1)*length(K))),
-                                 K = as.factor(paste0("K=",K.df)))
-pval_merge_comp_H1$pvalues <- sapply(pval_merge_comp_H1$pvalues, FUN = function(x){min(x, 1, na.rm=T)})
-
-p_distri_pval_merge_H1 <- ggplot(pval_merge_comp_H1) + 
-  geom_hline(aes(yintercept = 0.05, colour ="5% level"), linetype = "dashed") +
-  scale_colour_manual(name = " ", values = "red")  +
-  ggnewscale::new_scale_colour() +
-  aes(x=K, y = pvalues, colour = Method) + 
-  geom_boxplot() +
-  xlab("Number of estimated clusters (K)") +
-  ylab("p-values (under H1)") +
-  scale_colour_manual(name = "Merging function", values = c("#899D78","#8A1C7C","#735CDD")) +
-  theme_classic() +
-  theme(axis.title = element_text(size = 14),
-        strip.text = element_text(size = 12))
-
-## Statistical power
-delta <- seq(0,8, 0.5)
-
-pval_bonf_H1_pow <- read.csv(file = "supplementary/simulations-results/power_comp_merge_bonf.csv")
-pval_geo_H1_pow <- read.csv(file = "supplementary/simulations-results/power_comp_merge_geo.csv")
-pval_harm_H1_pow <- read.csv(file = "supplementary/simulations-results/power_comp_merge_harm.csv")
-
-
-pow_bonf <- apply(pval_bonf_H1_pow, 2, fun_FP)
-pow_geo <- apply(pval_geo_H1_pow, 2, fun_FP)
-pow_harm <- apply(pval_harm_H1_pow, 2, fun_FP)
-
-pow_merge <- data.frame(Power = c(pow_bonf, pow_geo, pow_harm),
-                        Method = c(rep("Bonferoni (min)", length(delta)),
-                                   rep("Geometric Mean", length(delta)),
-                                   rep("Harmonic Mean", length(delta))),
-                        Delta = rep(delta,3))
-
-p_power_merge <- ggplot(pow_merge) + 
-  geom_hline(aes(yintercept = 0.05, colour ="5% level"), linetype = "dashed") +
-  scale_colour_manual(name = " ", values = "red")  +
-  ggnewscale::new_scale_colour() +
-  aes(x=Delta, y = Power, colour = Method) + 
-  geom_line() +
-  geom_point() +
-  scale_colour_manual(name = "Merging function", values = c("#899D78","#8A1C7C","#735CDD")) +
-  xlab(TeX(r'(Value of the mean difference $\delta$)'))+
-  ylab("Statistical power (5% levels)")  +
-  theme(axis.title = element_text(size = 14),
-        strip.text = element_text(size = 12)) 
-
-# Make figure 
-p_merging <- (p_distri_pval_merge |p_distri_pval_merge_H1) / (p_FP_merge|p_power_merge) +
-  plot_layout(guides = "collect") +
-  plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face = "bold", size = 14))
-
-p_merging 
-
-ggsave(p_merging, filename = "supplementary/figures/FigureS3.pdf", 
-       dpi = 600, 
-       width = 225, 
-       height = 150, 
-       units = "mm")
+# Combine the two figures
+pbehav_illu + p_res + plot_annotation(tag_levels = "A")  + plot_layout(widths = c(6,8))  & theme(plot.tag = element_text(face = 'bold'))
+ggsave(filename = "supplementary/figures/FigureS3.pdf", dpi = 600, height = 125, width = 260, units = "mm")
+        

@@ -19,5 +19,5 @@ for (i in 1:nsimu){
   cl <- hcl2(X)
   pval_pb[i, 1] <- t.test(X[cl==1,1], X[cl==2,1])$p.value
   pval_pb[i, 2] <- test_clusters_approx(X, k1=1, k2=2, cl_fun = hcl2, cl = cl)$pval
-  write.csv(pval_pb, file = "simulations-results/pval_pb.csv", row.names = F)
+  write.csv(pval_pb, file = "simulations-results/results_figure1/pval_pb.csv", row.names = F)
 }

@@ -54,8 +54,8 @@ p_illu_distri <- ggplot(X.illu.distri) +
         strip.text = element_text(size = 12),
         legend.position = "bottom") 
 
-pval_distri_H0_dip <- read.csv(file = "supplementary/simulations-results/pval_distri_H0_dip.csv")
-pval_distri_H0_SI <- read.csv(file="supplementary/simulations-results/pval_distri_H0_SI.csv")
+pval_distri_H0_dip <- read.csv(file = "supplementary/simulations-results/results_figureS6/pval_distri_H0_dip.csv")
+pval_distri_H0_SI <- read.csv(file="supplementary/simulations-results/results_figureS6/pval_distri_H0_SI.csv")
 
 pval_distri_H0 <- data.frame(pvalues = c(as.numeric(as.matrix(pval_distri_H0_dip[,-1])),
                                          as.numeric(as.matrix(pval_distri_H0_SI[,-1]))),

@@ -55,10 +55,10 @@ delta <- seq(0,8, 0.2)
 alpha <- 0.05
 nsimu <- 2000
 
-pval_dip <- read.csv(file = "simulations-results/power_dip_delta.csv")
-pval_SI_2cl <- read.csv(file = "simulations-results/power_SI_2cl_delta.csv")
-pval_SI_4cl <- read.csv(file = "simulations-results/power_SI_4cl_delta.csv")
-pval_merge <- read.csv(file = "simulations-results/power_merge_delta.csv")
+pval_dip <- read.csv(file = "simulations-results/results_figure3/power_dip_delta.csv")
+pval_SI_2cl <- read.csv(file = "simulations-results/results_figure3/power_SI_2cl_delta.csv")
+pval_SI_4cl <- read.csv(file = "simulations-results/results_figure3/power_SI_4cl_delta.csv")
+pval_merge <- read.csv(file = "simulations-results/results_figure3/power_merge_delta.csv")
 
 
 # Estimation of the statistical power using monte-carlo approach over the 2000 simulations

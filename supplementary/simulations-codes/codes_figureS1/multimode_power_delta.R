@@ -6,7 +6,7 @@ library(multimode)
 
 #Filename 
 
-filename_r.pow <- paste0("supplementary/simulations-results/multimode_test_power", ".csv")
+filename_r.pow <- paste0("supplementary/simulations-results/results_figureS1/multimode_test_power", ".csv")
 
 
 #Parameters 

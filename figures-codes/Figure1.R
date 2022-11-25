@@ -45,7 +45,7 @@ ppb_illu_2cl <- ggplot(X) + aes(x=X1, fill = Cluster, colour = Cluster) +
         axis.title = element_text(size = 14))
 
 # Results over 2 000 simulations of the data 
-pval_pb <- read.csv(file = "simulations-results/pval_pb.csv")
+pval_pb <- read.csv(file = "simulations-results/results_figure1/pval_pb.csv")
 pval_pb <- as.matrix(pval_pb)
 
 pval_pb.df <- data.frame(pvalues = c(as.numeric(pval_pb),

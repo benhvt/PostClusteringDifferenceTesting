@@ -10,98 +10,115 @@ library(cowplot)
 library(dplyr)
 library(ggcorrplot)
 library(latex2exp)
+library(multimode)
 source(file = "utils.R")
 
 theme_set(theme_bw())
 
-pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
-pal <- wes_palette("Darjeeling1", 3, type = "continuous")
-pal2 <- c(wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
-pal8 <- c(pal_illu[1], pal_illu[4], pal_illu[3], pal_illu[2], "#D0B49F", "#AB6B51", "#2F435A", "#A47786")
+# Results over 2000 simulations of the data 
 
-hcl2 <- function(x){
-  distance <- dist(x, method = "euclidean")
-  hcl <- hclust(distance, method="ward.D2")
-  return(as.factor(cutree(hcl, k=2)))
-}
+## Under the null
+nsimu <- 500
+pval_null_U <- as.matrix(read.csv(file = "supplementary/simulations-results/results_figureS1/multimode_test_unimodale_uniform.csv"))
 
-hcl8<- function(x){
-  clust <- quantile(x, probs = seq(0,1, length.out = 9))
-  cl <- cut(x, clust, include.lowest = T)
-  cl <- factor(cl, labels = 1:8)
-  return(as.factor(cl))
-}
+pval_null_N <- as.matrix(read.csv(file = "supplementary/simulations-results/results_figureS1/multimode_test_unimodale_gaussian.csv"))
 
-hcl7 <- function(x){
-  return(cutree(hclust(dist(x), method = "ward.D"), k=7))
-}
+pval_null_U.df <- data.frame(pvalues = as.numeric(pval_null_U), 
+                             Test = c(rep("Silverman", nsimu), 
+                                      rep("DipTest", nsimu),
+                                      rep("Cheng and Hall", nsimu),
+                                      rep("Ameijeiras", nsimu)))
 
-# Illustration 
-set.seed(16112021)
-n <- 200
-X.illu.over <-  data.frame(X=c(rnorm(n/2, sd = 2), rnorm(n/2, mean = 10)))
-X.illu.over$Cluster <- as.factor(hcl3(X.illu.over$X))
-X.illu.over$Cas <- "Overestimation"
+pval_null_N.df <- data.frame(pvalues = as.numeric(pval_null_N), 
+                             Test = pval_null_U.df$Test)
+pval_null_U.df$Distribution <- "Uniform"
+pval_null_N.df$Distribution <- "Gaussian"
 
-X.illu.under <- data.frame(X=rnorm(n))
-X.illu.under$Cluster <- as.factor(hcl7(X.illu.under$X))
-X.illu.under$Cas <- "Underestimation"
-X.illu.under$Cluster <- forcats::fct_recode(X.illu.under$Cluster, 
-                                            "3"="1",
-                                            "2"="2", 
-                                            "1"="3",
-                                            "4"="7",
-                                            "5"="5",
-                                            "6"="6",
-                                            "7"="4")
-X.illu  <- rbind(X.illu.under, X.illu.over)
+pval_null <- rbind(pval_null_U.df, pval_null_N.df)
+
+p_unimod <- ggplot(pval_null)+ aes(x=Distribution, y = pvalues, colour = Test) +
+  geom_boxplot() +
+  scale_colour_brewer(palette = "Dark2") +
+  ylab("p-values (under H0)") + 
+  ylim(c(0, 1)) + theme_classic(base_size=17) +
+  theme(legend.position = "none",
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size=12))
+
+## Under the alternative
+delta <- seq(0,8, 0.5)
+power_multimod_delta <- read.csv(file = "supplementary/simulations-results/results_figureS1/multimode_test_power.csv")
+power_multimod_delta <- power_multimod_delta[,-1]
 
 
+power_delta <- data.frame(Power = as.numeric(as.matrix(power_multimod_delta)),
+                          Test = c(rep("Silverman", length(delta)), 
+                                   rep("DipTest", length(delta)),
+                                   rep("Cheng and Hall", length(delta)),
+                                   rep("Ameijeiras", length(delta))),
+                          delta = rep(delta, 4))
 
-p_var_illu <- ggplot(X.illu) + aes(x=X, fill = Cluster, colour = Cluster) + 
-  geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
-  geom_density(alpha = 0.2) +
-  scale_colour_manual(values =pal8) +
-  scale_fill_manual(values = pal8) +
-  facet_wrap(~Cas, scale = "free") +
-  ylab("Density") +
+p_power_delta <- ggplot(power_delta) + aes(x=delta, y = Power, colour = Test) +
+  geom_point() +
+  geom_line() +
+  scale_colour_brewer(palette = "Dark2") +
+  xlab(TeX(r'(Value of the mean difference $\delta$)'))+
+  ylab("Statistical power (5% levels)") +
   theme_classic() +
   theme(axis.title = element_text(size = 14),
-        strip.text = element_text(size = 12),
-        legend.position = "bottom") 
+        strip.text = element_text(size=12))
 
-# Results over 2000 simulations of the data 
-nsimu <- 2000
-pval_var_over <- read.csv(file = "supplementary/simulations-results/estim_var.csv")
-pval_var_under <- read.csv(file = "supplementary/simulations-results/estim_var_under.csv")
-pval_var_over.df <- data.frame(pvalues = as.numeric(as.matrix(pval_var_over)),
-                               Estimation = c(rep("In Cluster", nsimu), rep("With all", nsimu)))
-pval_var_over.df$Cas = "Overestimation"
+nn <-  c(10,15, 25, 50, 75, 100, 200, 1000)
 
-pval_var_under.df <- data.frame(pvalues = as.numeric(as.matrix(pval_var_under)),
-                                Estimation = c(rep("In Cluster", nsimu), rep("With all", nsimu)))
-pval_var_under.df$Cas = "Underestimation"
 
-pval_var.df <- rbind(pval_var_over.df, pval_var_under.df)
+power_multimod_n <- as.matrix(read.csv(file="supplementary/simulations-results/results_figureS1/multimode_test_power_n.csv",
+                                       row.names = NULL))
+time_multimod_n <- as.matrix(read.csv(file="supplementary/simulations-results/results_figureS1/time_multimode.csv"))
 
-p_estim_var <- ggplot(pval_var.df)+ stat_qq(aes(sample=pvalues, colour = Estimation), distribution=qunif) + 
-  geom_abline(slope=1, intercept=0, col="red") + xlab("Theoretical Quantiles") + 
-  ylab("Empirical Quantiles") + 
-  xlim(c(0, 1)) + ylim(c(0, 1)) + theme_classic(base_size=17) +
-  facet_wrap(~Cas) +
-  scale_colour_manual(name = "Variance estimation",  
-                      values = c(pal2[2], "#1F456E"), 
-                      labels = lapply(c(r'($\hat{\sigma}^2_g = \frac{1}{|C_k| + |C_l|-1}\sum_{i\in C_k, C_l}\left(X_{gi} - \bar{X}_g^{C_k, C_l}\right)^2$)',
-                                        r'($\hat{\sigma}^2_g = \frac{1}{n-1}\sum_{i=1}^n\left(X_{gi}-\bar{X}_g\right)^2$)'), TeX))  +
-  guides(colour = guide_legend(override.aes = list(size=5))) +
-  theme(axis.title = element_text(size = 14), 
-        strip.text = element_text(size=12), 
-        legend.position = "bottom")
+power_multimod_n <- power_multimod_n[,-1]
+time_multimod_n <- time_multimod_n[,-1]
+multimod_n <- data.frame(N=rep(nn, 4), 
+                         Power = as.numeric(power_multimod_n),
+                         Time = as.numeric(time_multimod_n),
+                         Test = c(rep("Silverman", length(nn)), 
+                                  rep("DipTest", length(nn)),
+                                  rep("Cheng and Hall", length(nn)),
+                                  rep("Ameijeiras", length(nn))))
 
-# Make figure
-p_pb_var <-plot_grid(p_var_illu, p_estim_var, nrow = 2, labels = "AUTO", rel_widths =c(0.3,1), rel_heights = c(0.4,0.5) ) 
-p_pb_var
+p_multimod_power_n <- ggplot(multimod_n) + aes(x=N, y=Power, colour = Test) + 
+  geom_point() +
+  geom_line() +
+  scale_colour_brewer(palette = "Dark2") +
+  xlab("Number of observations (n)") +
+  ylab("Statistical power (5% levels)") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size=12))
 
-ggsave(p_pb_var, filename = "supplementary/figures/FigureS1.pdf", dpi = 600, width = 225, height = 337.5, units = "mm")
-ggsave(p_pb_var, filename = "supplementary/figures/FigureS1.png", dpi = 600, width = 225, height = 337.5, units = "mm")
+p_multimod_time_n <- ggplot(multimod_n) + aes(x=N, y = Time, colour = Test) + 
+  geom_point() +
+  geom_line() +
+  scale_colour_brewer(palette = "Dark2") +
+  xlab("Number of observations (n)") +
+  ylab("Mean computation time (sec)
+       log10 scale") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.title = element_text(size = 14),
+        strip.text = element_text(size=12)) +
+  scale_y_continuous(trans = 'log10')
 
+
+# Make figure 
+
+p_multimod<- (p_unimod+p_multimod_time_n )/(p_power_delta + p_multimod_power_n)  + 
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face = "bold", size = 14))
+
+p_multimod
+ggsave(p_multimod, filename = "supplementary/figures/FigureS1.pdf", 
+       dpi = 600, 
+       width = 225, 
+       height = 150, 
+       units = "mm")

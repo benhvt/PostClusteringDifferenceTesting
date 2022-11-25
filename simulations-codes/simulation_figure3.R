@@ -1,7 +1,7 @@
 # CURTA Simulation : Statistical Power of detection according to delta, the mean difference between two clusters
 
 # Packages 
-library(PCVI)
+library(VALIDICLUST)
 
 # Function to be used
 hcl2 <- function(x){
@@ -25,10 +25,10 @@ alpha <- 0.05
 # Save results
 pval_delta_SI_4cl <- pval_delta_SI_2cl <- pval_delta_merge <- pval_delta_Dip <- matrix(NA, nrow = nsimu, ncol = length(delta))
 colnames(pval_delta_SI_2cl) <- colnames(pval_delta_SI_4cl) <- colnames(pval_delta_merge) <- colnames(pval_delta_Dip) <- paste0("delta=", delta)
-filename_rSI_4cl <- paste0("simulations-results/power_SI_4cl", ".csv")
-filename_rSI_2cl <- paste0("simulations-results/power_SI_2cl", ".csv")
-filename_rMerge <- paste0("simulations-results/power_merge", ".csv")
-filename_rDip <- paste0("simulations-results/power_Dip", ".csv")
+filename_rSI_4cl <- paste0("simulations-results/results_figure3/power_SI_4cl", ".csv")
+filename_rSI_2cl <- paste0("simulations-results/results_figure3/power_SI_2cl", ".csv")
+filename_rMerge <- paste0("simulations-results/results_figure3/power_merge", ".csv")
+filename_rDip <- paste0("simulations-results/results_figure3/power_Dip", ".csv")
 
 
 

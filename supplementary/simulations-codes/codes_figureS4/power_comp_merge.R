@@ -6,9 +6,9 @@ library(PCVI)
 # Function to be used
 
 #Filename 
-filename_rMerge_bonf <- paste0("supplementary/simulations-results/power_comp_merge_bonf",".csv")
-filename_rMerge_geo <- paste0("supplementary/simulations-results/power_comp_merge_geo",".csv")
-filename_rMerge_harm <- paste0("supplementary/simulations-results/power_comp_merge_harm",".csv")
+filename_rMerge_bonf <- paste0("supplementary/simulations-results/results_figureS4/power_comp_merge_bonf",".csv")
+filename_rMerge_geo <- paste0("supplementary/simulations-results/results_figureS4/power_comp_merge_geo",".csv")
+filename_rMerge_harm <- paste0("supplementary/simulations-results/results_figureS4/power_comp_merge_harm",".csv")
 
 
 #Functions 

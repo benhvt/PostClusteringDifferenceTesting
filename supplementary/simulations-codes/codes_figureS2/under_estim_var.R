@@ -14,7 +14,7 @@ hcl7 <- function(x){
 }
 
 #Filename 
-filename_r <- paste0("supplementary/simulations-results/estim_var_under", ".csv")
+filename_r <- paste0("supplementary/simulations-results/results_figureS2/estim_var_under", ".csv")
 
 
 # Paramaters 

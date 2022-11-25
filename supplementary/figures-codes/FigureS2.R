@@ -1,123 +1,107 @@
-# Figure S2 
+#Figure S2
+
 library(ggplot2)
 library(RColorBrewer)
 library(wesanderson)
 library(viridis)
 library(paletteer)
 library(patchwork)
-library(grid)
 library(cowplot)
 library(dplyr)
 library(ggcorrplot)
 library(latex2exp)
 source(file = "utils.R")
-library(PCVI)
 
 theme_set(theme_bw())
-pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
 
-hcl3 <- function(x){
-  clust <- quantile(x[,1], probs = seq(0,1, length.out = 4))
-  cl <- cut(x[,1], clust, include.lowest = T)
-  cl <- factor(cl, labels = 1:3)
+pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
+pal <- wes_palette("Darjeeling1", 3, type = "continuous")
+pal2 <- c(wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
+pal8 <- c(pal_illu[1], pal_illu[4], pal_illu[3], pal_illu[2], "#D0B49F", "#AB6B51", "#2F435A", "#A47786")
+
+hcl2 <- function(x){
+  distance <- dist(x, method = "euclidean")
+  hcl <- hclust(distance, method="ward.D2")
+  return(as.factor(cutree(hcl, k=2)))
+}
+
+hcl8<- function(x){
+  clust <- quantile(x, probs = seq(0,1, length.out = 9))
+  cl <- cut(x, clust, include.lowest = T)
+  cl <- factor(cl, labels = 1:8)
   return(as.factor(cl))
 }
 
-
-pal <- wes_palette("Darjeeling1", 3, type = "continuous")
-pal2 <- c(wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
-
-pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
-
-# Illustration
-
-# Parameters 
-n <- 200
-deltaC1C2 <- c(0.5, 1, 1.5, 3, 6, 12, 15, 18, 19, 19.5)
-muX1 <- c(-5, -5+deltaC1C2[5], 15)
-muX2 <- c(0,0, 0)
-
-set.seed(15112021)
-X <- data.frame(X1 = c(rnorm(n/3, mean = muX1[1]),
-                         rnorm(n/3, mean = muX1[2]),
-                         rnorm(n/3, mean = muX1[3])),
-                  X2 = c(rnorm(n/3, mean = muX2[1]),
-                         rnorm(n/3, mean = muX2[2]),
-                         rnorm(n/3, mean =muX2[3])))
-X$Cluster <- hcl3(X[,1:2])
-pbehav_illu <- ggplot(X) + aes(x=X1, y = X2, colour = Cluster) +
-  geom_point(alpha = .8) +
-  scale_colour_manual(values = c(pal_illu[1], pal_illu[4], pal_illu[3])) +
-  ggnewscale::new_scale_colour() +
-  geom_vline(data = X %>% group_by(Cluster) %>% summarise(Mean = mean(X1)), aes(xintercept = Mean, colour = Cluster),
-             linetype = "dashed", size = 1.2)+
-  scale_colour_manual(values = c("#22574e", "#9a2a04", "#b37c56")) +
-  guides(colour = "none") +
-  annotate("segment", x = mean(X$X1[X$Cluster==1]), xend = mean(X$X1[X$Cluster==2]), y = 0, yend = 0,
-           colour = "darkorange", size = 1, arrow = arrow(ends = "both")) +
-  annotate('text', x=mean(X$X1[X$Cluster %in% c(1,2)]), y = .6, label = TeX(r'($\delta$)'), size = 8, colour = "darkorange") +
-  labs(x=expression(X[1]), 
-       y=expression(X[2])) +
-  theme(legend.position = "bottom",
-        axis.title = element_text(size = 15),
-        strip.text = element_text(size=14),
-        legend.title = element_text(size=14),
-        legend.text = element_text(size = 12))
-pbehav_illu 
-
-
-# Simulation 
-nsimu <- 500
-pvalC1C2 <- pvalC1C3 <- matrix(NA, nrow = nsimu, ncol = length(deltaC1C2))
-
-for (i in 1:length(deltaC1C2)){
-  res.simu.delta<- replicate(nsimu, expr = {
-    muX1 <- c(-5, -5+deltaC1C2[i], 15)
-    muX2 <- c(0,0, 0)
-    X <- data.frame(X1 = c(rnorm(n/3, mean = muX1[1]),
-                           rnorm(n/3, mean = muX1[2]),
-                           rnorm(n/3, mean = muX1[3])),
-                    X2 = c(rnorm(n/3, mean = muX2[1]),
-                           rnorm(n/3, mean = muX2[2]),
-                           rnorm(n/3, mean =muX2[3])))
-    X$Cluster <- hcl3(X[,1:2])
-    res1 <- test_selective_inference(as.matrix(X[,1:2]), k1=1, k2=2, g=1, cl_fun = hcl3, cl = X$Cluster)$pval
-    res2 <- test_selective_inference(as.matrix(X[,1:2]), k1=1, k2=3, g=1, cl_fun = hcl3, cl = X$Cluster)$pval
-    c(res1, res2)
-  })
-  pvalC1C2[,i] <- res.simu.delta[1,]
-  pvalC1C3[,i] <- res.simu.delta[2,]
+hcl7 <- function(x){
+  return(cutree(hclust(dist(x), method = "ward.D"), k=7))
 }
 
-write.csv(pvalC1C2, file = "supplementary/simulations-results/suppS2_C1C2.csv", row.names = F)
-write.csv(pvalC1C3, file = "supplementary/simulations-results/suppS2_C1C3.csv", row.names = F)
+# Illustration 
+set.seed(16112021)
+n <- 200
+X.illu.over <-  data.frame(X=c(rnorm(n/2, sd = 2), rnorm(n/2, mean = 10)))
+X.illu.over$Cluster <- as.factor(hcl3(X.illu.over$X))
+X.illu.over$Cas <- "Overestimation"
 
-# Figures Results 
+X.illu.under <- data.frame(X=rnorm(n))
+X.illu.under$Cluster <- as.factor(hcl7(X.illu.under$X))
+X.illu.under$Cas <- "Underestimation"
+X.illu.under$Cluster <- forcats::fct_recode(X.illu.under$Cluster, 
+                                            "3"="1",
+                                            "2"="2", 
+                                            "1"="3",
+                                            "4"="7",
+                                            "5"="5",
+                                            "6"="6",
+                                            "7"="4")
+X.illu  <- rbind(X.illu.under, X.illu.over)
 
-pvalC1C2.res <- read.csv(file = "supplementary/simulations-results/suppS2_C1C2.csv")
-pvalC1C3.res <- read.csv(file = "supplementary/simulations-results/suppS2_C1C3.csv")
 
-power.df <- data.frame(Power = c(apply(pvalC1C2.res, 2, function(x){mean(x<0.05)}),
-                                 apply(pvalC1C3.res, 2, function(x){mean(x<0.05)})),
-                       delta = rep(deltaC1C2, 2), 
-                       Test = rep(c("Cluster 1 vs Cluster 2", "Cluster 1 vs Cluster 3"), each = length(deltaC1C2)))
 
-p_res <- ggplot(power.df) + aes(x=delta, y = Power, colour = Test) + 
-  geom_point(size = 2) + 
-  geom_line(size = 0.8) + 
-  scale_colour_manual(values = c("#f865b0", "#8a1048")) +
-  xlab(TeX(r'($\delta$)')) +
- # ylab(expression(atop("Statistical power at the"~alpha ,"% level")))+
-  ylab(TeX(r'(Statistical power at the $\alpha = 5\%$ level)')) +
-  guides(colour = guide_legend(TeX(r'(Test on $X_1$)'))) +
-  theme(legend.position = "bottom",
-        axis.title = element_text(size = 15),
-        strip.text = element_text(size=14), 
-        legend.title = element_text(size=14),
-        legend.text = element_text(size = 12))
-p_res
+p_var_illu <- ggplot(X.illu) + aes(x=X, fill = Cluster, colour = Cluster) + 
+  geom_histogram(aes(y=..density..), colour = "white", bins = 25, alpha = 0.9) +
+  geom_density(alpha = 0.2) +
+  scale_colour_manual(values =pal8) +
+  scale_fill_manual(values = pal8) +
+  facet_wrap(~Cas, scale = "free") +
+  ylab("Density") +
+  theme_classic() +
+  theme(axis.title = element_text(size = 14),
+        strip.text = element_text(size = 12),
+        legend.position = "bottom") 
 
-# Combine the two figures
-pbehav_illu + p_res + plot_annotation(tag_levels = "A")  + plot_layout(widths = c(6,8))  & theme(plot.tag = element_text(face = 'bold'))
-ggsave(filename = "supplementary/figures/FigureS2.pdf", dpi = 600, height = 125, width = 260, units = "mm")
-        
+# Results over 2000 simulations of the data 
+nsimu <- 2000
+pval_var_over <- read.csv(file = "supplementary/simulations-results/results_figureS2/estim_var.csv")
+pval_var_under <- read.csv(file = "supplementary/simulations-results/results_figureS2/estim_var_under.csv")
+pval_var_over.df <- data.frame(pvalues = as.numeric(as.matrix(pval_var_over)),
+                               Estimation = c(rep("In Cluster", nsimu), rep("With all", nsimu)))
+pval_var_over.df$Cas = "Overestimation"
+
+pval_var_under.df <- data.frame(pvalues = as.numeric(as.matrix(pval_var_under)),
+                                Estimation = c(rep("In Cluster", nsimu), rep("With all", nsimu)))
+pval_var_under.df$Cas = "Underestimation"
+
+pval_var.df <- rbind(pval_var_over.df, pval_var_under.df)
+
+p_estim_var <- ggplot(pval_var.df)+ stat_qq(aes(sample=pvalues, colour = Estimation), distribution=qunif) + 
+  geom_abline(slope=1, intercept=0, col="red") + xlab("Theoretical Quantiles") + 
+  ylab("Empirical Quantiles") + 
+  xlim(c(0, 1)) + ylim(c(0, 1)) + theme_classic(base_size=17) +
+  facet_wrap(~Cas) +
+  scale_colour_manual(name = "Variance estimation",  
+                      values = c(pal2[2], "#1F456E"), 
+                      labels = lapply(c(r'($\hat{\sigma}^2_g = \frac{1}{|C_k| + |C_l|-1}\sum_{i\in C_k, C_l}\left(X_{gi} - \bar{X}_g^{C_k, C_l}\right)^2$)',
+                                        r'($\hat{\sigma}^2_g = \frac{1}{n-1}\sum_{i=1}^n\left(X_{gi}-\bar{X}_g\right)^2$)'), TeX))  +
+  guides(colour = guide_legend(override.aes = list(size=5))) +
+  theme(axis.title = element_text(size = 14), 
+        strip.text = element_text(size=12), 
+        legend.position = "bottom")
+
+# Make figure
+p_pb_var <-plot_grid(p_var_illu, p_estim_var, nrow = 2, labels = "AUTO", rel_widths =c(0.3,1), rel_heights = c(0.4,0.5) ) 
+p_pb_var
+
+ggsave(p_pb_var, filename = "supplementary/figures/FigureS2.pdf", dpi = 600, width = 225, height = 337.5, units = "mm")
+ggsave(p_pb_var, filename = "supplementary/figures/FigureS2.png", dpi = 600, width = 225, height = 337.5, units = "mm")
+

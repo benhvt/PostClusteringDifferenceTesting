@@ -5,8 +5,8 @@ library(PCVI)
 library(multimode)
 
 #Filename 
-filename_r.uni.U <- paste0("supplementary/simulations-results/multimode_test_unimodale_uniform", ".csv")
-filename_r.uni.N <- paste0("supplementary/simulations-results/multimode_test_unimodale_gaussian", ".csv")
+filename_r.uni.U <- paste0("supplementary/simulations-results/results_figureS1/multimode_test_unimodale_uniform", ".csv")
+filename_r.uni.N <- paste0("supplementary/simulations-results/results_figureS1/multimode_test_unimodale_gaussian", ".csv")
 
 
 #Parameters 

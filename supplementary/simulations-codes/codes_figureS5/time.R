@@ -17,12 +17,12 @@ hcl4 <- function(x){
 }
 
 #Filename 
-filename_rtime_SI_4cl <- paste0("result_r/time_SI_4cl", "_", slar_taskid, ".csv")
-filename_rtime_SI_2cl <- paste0("result_r/time_SI_2cl", "_", slar_taskid, ".csv")
-filename_rtime_dip_2cl <- paste0("result_r/time_dip_2cl", "_", slar_taskid, ".csv")
-filename_rtime_dip_4cl <- paste0("result_r/time_dip_4cl", "_", slar_taskid, ".csv")
-filename_rtime_merge_2cl <- paste0("result_r/time_merge_2cl", "_", slar_taskid, ".csv")
-filename_rtime_merge_4cl <- paste0("result_r/time_merge_4cl", "_", slar_taskid, ".csv")
+filename_rtime_SI_4cl <- paste0("supplementary/simulations-results/results_figureS5/time_SI_4cl", "_", slar_taskid, ".csv")
+filename_rtime_SI_2cl <- paste0("supplementary/simulations-results/results_figureS5/time_SI_2cl", "_", slar_taskid, ".csv")
+filename_rtime_dip_2cl <- paste0("supplementary/simulations-results/results_figureS5/time_dip_2cl", "_", slar_taskid, ".csv")
+filename_rtime_dip_4cl <- paste0("supplementary/simulations-results/results_figureS5/time_dip_4cl", "_", slar_taskid, ".csv")
+filename_rtime_merge_2cl <- paste0("supplementary/simulations-results/results_figureS5/time_merge_2cl", "_", slar_taskid, ".csv")
+filename_rtime_merge_4cl <- paste0("supplementary/simulations-results/results_figureS5/time_merge_4cl", "_", slar_taskid, ".csv")
 
 # Paramaters 
 nsimu <- 50

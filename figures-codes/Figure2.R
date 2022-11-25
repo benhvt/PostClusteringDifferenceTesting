@@ -55,8 +55,8 @@ pbehav_illu + ggtitle("Experience")
 # Results over 2 000 simulations of the data
 nsimu <- 2000
 
-pval_H0 <- read.csv(file = "simulations-results/simuH0.csv")
-pval_H1 <- read.csv(file = "simulations-results/simuH1.csv")
+pval_H0 <- read.csv(file = "simulations-results/results_figure2/simuH0.csv")
+pval_H1 <- read.csv(file = "simulations-results/results_figure2/simuH1.csv")
 
 pval_H0.df <- data.frame(pvalues = c(as.numeric(as.matrix(pval_H0))),
                          Method = c(rep("Selective Test", 6*nsimu),

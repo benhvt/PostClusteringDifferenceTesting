@@ -6,8 +6,8 @@ library(multimode)
 
 #Filename 
 
-filename_r.pow_n <- paste0("supplementary/simulations-results/multimode_test_power_n", ".csv")
-filename_rtime_multimode <- paste0("supplementary/simulations-results/time_multimode", ".csv")
+filename_r.pow_n <- paste0("supplementary/simulations-results/results_figureS1/multimode_test_power_n", ".csv")
+filename_rtime_multimode <- paste0("supplementary/simulations-results/results_figureS1/time_multimode", ".csv")
 
 #Parameters 
 nsimu <- 500

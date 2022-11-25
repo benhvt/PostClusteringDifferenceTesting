@@ -21,14 +21,14 @@ p <- c(2:10, 25, 50)
 nsimu <- 500
 
 # Results over 500 simulations of the data 
-time_dip_2cl <- read.csv(file = "supplementary/simulations-results/time_dip_2cl.csv")
-time_dip_4cl <- read.csv(file = "supplementary/simulations-results/time_dip_4cl.csv")
+time_dip_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_dip_2cl.csv")
+time_dip_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_dip_4cl.csv")
 
-time_SI_2cl <- read.csv(file = "supplementary/simulations-results/time_SI_2cl.csv")
-time_SI_4cl <- read.csv(file = "supplementary/simulations-results/time_SI_4cl.csv")
+time_SI_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_SI_2cl.csv")
+time_SI_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_SI_4cl.csv")
 
-time_merge_2cl <- read.csv(file = "supplementary/simulations-results/time_merge_2cl.csv")
-time_merge_4cl <- read.csv(file = "supplementary/simulations-results/time_merge_4cl.csv")
+time_merge_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_merge_2cl.csv")
+time_merge_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_merge_4cl.csv")
 time_merge_4cl$V11 <- 60*time_merge_4cl$V11 #Min -> sec
 
 
