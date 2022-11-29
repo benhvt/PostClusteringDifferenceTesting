@@ -1,11 +1,11 @@
 README
 ================
 
-# Post-clustering difference testing: valid inference and practical considerationswith applications to ecological and biological data
+# Post-clustering difference testing: valid inference and practical considerations with applications to ecological and biological data
 
 Contains codes to reproduce simulations, figures and analysis of the
 article *Post-clustering difference testing: valid inference and
-practical considerationswith applications to ecological and biological
+practical considerations with applications to ecological and biological
 data*.
 
 ## Organisation
@@ -27,8 +27,8 @@ article.
 
 ### simulations-results
 
-Contains sub-folder with simulation results of the **simulations-codes**
-folder:
+Contains sub-folder with the simulations results of the
+**simulations-codes** folder:
 
 -   **results_figure1** contains `pval_pb.csv` illustrating
     post-clustering inference problem.
@@ -44,19 +44,19 @@ folder:
 
     -   `power_dip_delta.csv`: statistical power of the multimodality
         test as a function of mean differences $\delta$ between the two
-        modes of a 2-components gaussian mixture.
+        modes of a 2-components Gaussian mixture.
     -   `power_SI_2cl_delta.csv`: statistical power of the selective
-        test as a function of mean differences $\delta$ between between
-        the two modes of a 2-components gaussian mixture when $2$
-        clusters are estimated.
+        test as a function of mean differences $\delta$ between the two
+        modes of a 2-components Gaussian mixture when $2$ clusters are
+        estimated.
     -   `power_SI_4cl_delta.csv`: statistical power of the selective
-        test as a function of mean differences $\delta$ between between
-        the two modes of a 2-components gaussian mixture when $4$
-        clusters are estimated
+        test as a function of mean differences $\delta$ between the two
+        modes of a 2-components Gaussian mixture when $4$ clusters are
+        estimated
     -   `power_merge_delta.csv`: statistical power of the merging test
-        as a function of mean differences $\delta$ between between the
-        two modes of a 2-components gaussian mixture when $4$ clusters
-        are estimated
+        as a function of mean differences $\delta$ between the two modes
+        of a 2-components Gaussian mixture when $4$ clusters are
+        estimated
 
 ### applications-codes
 
@@ -78,8 +78,8 @@ Contains codes to generate the figures presented in the article
 ### figures
 
 Contains the main figures of the article generated using codes in the
-**figures-codes** and **applications-codes** folder using the
-simulations-results data.
+**figures-codes** and **applications-codes** folders using the
+**simulations-results** data.
 
 ### supplementary
 
@@ -94,13 +94,13 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
     -   `multimode_power_delta.R`: Monte-Carlo simulations to evaluate
         statistical power of multimodality tests implemented in the
         `multimode` package as a function of the mean differences
-        $\delta$ between the two modes of a 2-components gaussian
+        $\delta$ between the two modes of a 2-components Gaussian
         mixture.
     -   `mulitmode_power_n.R`: Monte-Carlo simulations to evaluate
         statistical power of multimodality tests implemented in the
         `multimode` package as a function of the sample size $n$.
     -   `multimode_unimodal_case.R`: Simulations under the null of
-        unimodality for gaussian and uniform distributed data
+        unimodality for Gaussian and Uniform distributed data
 
 -   **codes_figureS2** contains simulation codes for Figure S2: Impact
     of the variance estimation on the distribution of p-values returned
@@ -179,13 +179,12 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
 
 #### figures-codes
 
-Contains codes to generate the figures presented in the supplementary
-material
+Contains codes to generate the figures presented in the Web Appendix.
 
 #### figures
 
-Contains the main figures of the supplementary materials generated using
-codes in the figures-codes folder using the simulations-results data.
+Contains the main figures of the Web Appendix generated using codes in
+the **figures-codes** folder using the **simulations-results** data.
 
 ## Notes
 
