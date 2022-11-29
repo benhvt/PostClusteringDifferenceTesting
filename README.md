@@ -189,7 +189,13 @@ codes in the figures-codes folder using the simulations-results data.
 
 ## Notes
 
-1.  Simulations were performed on CURTA from the *Mésocentre de Calcul
+1.  The three proposed tests are implemented in a `R` package
+    `VALIDICLUST`. The current version of the package could be installed
+    using the `VALIDICLUST_0.1.0.tar.gz` file. The development version
+    of `VALIDICLUST` is also available on
+    [Github](https://github.com/benhvt/VALIDICLUST).
+
+2.  Simulations were performed on CURTA from the *Mésocentre de Calcul
     Intensif Aquitain*:
 
 <!-- -->
@@ -198,7 +204,7 @@ codes in the figures-codes folder using the simulations-results data.
     Platform: x86_64-pc-linux-gnu (64-bit)
     Running under: CentOS Linux 7 (Core)
 
-2.  Data availability:
+3.  Data availability:
 
 -   Penguins data could be found in the [`palmerpenguins`
     package](https://cran.r-project.org/web/packages/palmerpenguins/index.html)

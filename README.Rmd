@@ -137,7 +137,9 @@ Contains the main figures of the supplementary materials generated using codes i
 
 ## Notes 
 
-1. Simulations were performed on CURTA from the *Mésocentre de Calcul Intensif Aquitain*: 
+1. The three proposed tests are implemented in a `R` package `VALIDICLUST`. The current version of the package could be installed using the `VALIDICLUST_0.1.0.tar.gz` file. The development version of `VALIDICLUST` is also available on [Github](https://github.com/benhvt/VALIDICLUST).
+
+2. Simulations were performed on CURTA from the *Mésocentre de Calcul Intensif Aquitain*: 
 
 ```
 R version 3.6.3 (2020-02-29)
@@ -145,7 +147,7 @@ Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: CentOS Linux 7 (Core)
 ```
 
-2. Data availability: 
+3. Data availability: 
 
   - Penguins data could be found in the [`palmerpenguins` package](https://cran.r-project.org/web/packages/palmerpenguins/index.html)
   
