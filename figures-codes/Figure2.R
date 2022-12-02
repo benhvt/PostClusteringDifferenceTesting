@@ -84,7 +84,7 @@ pval_2D <- rbind(pval_H0.df, pval_H1.df)
 variables.labs <- c(expression("X"[1]), expression("X"[2]))
 names(variables.labs) <- c("X[1]", "X[2]")
 pbehav_res <- ggplot(pval_2D) + aes(x=Test, y = pvalues, colour = Method, fill = Method) +
-  geom_boxplot(alpha=.4) +
+  geom_boxplot(alpha=.4, outlier.size = 0.2, outlier.alpha = .2) +
   scale_discrete_manual(c("color", "fill"), values = pal2, labels = c("Multimodality test",
                                                                       "Selective test (direct)",
                                                                       "Merging selective test",
