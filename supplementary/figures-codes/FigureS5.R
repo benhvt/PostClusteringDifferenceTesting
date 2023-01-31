@@ -71,12 +71,14 @@ p_time <- ggplot(time.df) + aes(x=p, y=Time, colour = Method) + geom_boxplot() +
 
 p_mean_time <- time.df %>% group_by(Method, NbCluster, p) %>% 
   summarise(Mean_Time = mean(Time)) %>%
+  mutate(p=as.numeric(as.character(p))) %>%
   ggplot() + 
-  aes(x=as.numeric(p), y=Mean_Time, colour = Method, linetype = Method) + 
+  aes(x=p, y=Mean_Time, colour = Method, linetype = Method, shape = Method) + 
   geom_point(size = 2.5) + 
   geom_line(size = 1.2) +
-  scale_y_continuous(trans = "log10") + 
-  annotation_logticks(sides = "l") +
+  scale_y_continuous(trans = "log10") +
+  scale_x_continuous(trans = "log10") +
+  annotation_logticks(sides = "lb") +
   scale_colour_manual(values = pal2, 
                       labels = c("Multimodality test",
                                  "Selective test (direct)", 
@@ -85,8 +87,14 @@ p_mean_time <- time.df %>% group_by(Method, NbCluster, p) %>%
                         labels = c("Multimodality test",
                                    "Selective test (direct)", 
                                    "Merging selective test")) +
+  scale_shape_manual(name = "Method",
+                     labels = c("Multimodality test",
+                                "Selective test (direct)", 
+                                "Merging selective test"),
+                     values = c(15,16, 17)) +
   facet_wrap(~NbCluster) +
-  xlab("Number of dimensions (p)") +
+  xlab("Number of dimensions (p)
+       log10 scale") +
   ylab("Mean time to perform one test (sec)
        log10 scale") +
   theme(legend.position = "bottom",
