@@ -1,4 +1,4 @@
-# Figure S6
+# Figure S7
 
 library(ggplot2)
 library(RColorBrewer)
@@ -54,8 +54,8 @@ p_illu_distri <- ggplot(X.illu.distri) +
         strip.text = element_text(size = 12),
         legend.position = "bottom") 
 
-pval_distri_H0_dip <- read.csv(file = "supplementary/simulations-results/results_figureS6/pval_distri_H0_dip.csv")
-pval_distri_H0_SI <- read.csv(file="supplementary/simulations-results/results_figureS6/pval_distri_H0_SI.csv")
+pval_distri_H0_dip <- read.csv(file = "supplementary/simulations-results/results_figureS7/pval_distri_H0_dip.csv")
+pval_distri_H0_SI <- read.csv(file="supplementary/simulations-results/results_figureS7/pval_distri_H0_SI.csv")
 
 pval_distri_H0 <- data.frame(pvalues = c(as.numeric(as.matrix(pval_distri_H0_dip[,-1])),
                                          as.numeric(as.matrix(pval_distri_H0_SI[,-1]))),
@@ -120,7 +120,7 @@ p_distri <- p_illu_distri + p_distri_H0_qq + plot_layout(guides = "collect") +
 #                       labels = "AUTO") 
 p_distri
 
-ggsave(p_distri, filename = "supplementary/figures/FigureS6.pdf", 
+ggsave(p_distri, filename = "supplementary/figures/FigureS7.pdf", 
        dpi = 600, 
        width = 300, 
        height = 200, 

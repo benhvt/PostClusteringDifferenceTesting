@@ -1,7 +1,7 @@
 #--- HIPC data analysis ---#
 
 # install.packages("cytometree")
-
+rm(list=ls())
 library(ggplot2)
 library(GGally)
 library(patchwork)
@@ -90,7 +90,7 @@ plt_multimodality_test_res <- box_pval(HIPC_scale, test = "Multimod", var = "CCR
         axis.text = element_text(size = 16),
         legend.title = element_text(size = 18),
         legend.text = element_text(size = 16))
-ggsave(plt_multimodality_test_res, filename = "figures/figure6.pdf",
+ggsave(plt_multimodality_test_res, filename = "figures/figure5.pdf",
        width = 300, height = 200, units = "mm")
 
  plt_multimodality_test_res
@@ -126,7 +126,7 @@ pairplot <- data.frame(HIPC_scale) %>%
         axis.title = element_text(size = 16),
         axis.text = element_text(size = 16)) 
 
-ggsave(pairplot, filename = "supplementary/figures/FigureS7.pdf",
+ggsave(pairplot, filename = "supplementary/figures/FigureS6.pdf",
        width = 375, 
        height = 400, 
        units = "mm",

@@ -118,15 +118,19 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
     -   `power_comp_merge.R`
 
 -   **codes_figureS5** contains simulation codes for Figure S5:
-    Evaluation of the computational times of our three proposed tests.
+    Additional simulation studies to evaluate the impact of the sample
+    size.
 
-    -   `time.R`
+    -   `sample_size.R`
 
--   **codes_figureS6** contains simulation codes for Figure S6: Impact
+-   **codes_figureS7** contains simulation codes for Figure S7: Impact
     of a miss-specification of the distributional assumption under the
     null.
 
     -   `distributional_assumption.R`
+
+-   **codes_sectionS3** contains simulations codes for all the
+    Supplementary Section S3
 
 #### simulations-results
 
@@ -139,17 +143,14 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
     -   results of `codes_figureS1/mulitmode_power_n.R`:
         -   `multimode_test_power_n.csv`
         -   `time_multimode.csv`
-
 -   **results_figureS2** contains:
     -   results of `codes_figureS2/over_estim_var.R`:
         -   `estim_var.csv`
     -   results of `codes_figuresS2/under_estim_var.R`:
         -   `estim_var_under.csv`
-
 -   **results_figureS3** contains:
     -   `3clusters_C1C2_SI_problem.csv`
     -   `3clusters_C1C3_SI_problem.csv`
-
 -   **results_figureS4** contains:
     -   results of `codes_figureS4/adj_pval_comp.R`:
         -   `pval_merge_bonf_H0.csv`
@@ -162,20 +163,27 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
         -   `power_comp_merge_bonf.csv`
         -   `power_comp_merge_geo.csv`
         -   `power_comp_merge_harm.csv`
-
 -   **results_figureS5** contains:
-    -   results of `codes_figureS5/time.R`:
-        -   `time_dip_2cl.csv`
-        -   `time_dip_4cl.csv`
-        -   `time_SI_2cl.csv`
-        -   `time_SI_4cl.csv`
-        -   `time_merge_2cl.csv`
-        -   `time_merge_4cl.csv`
-
--   -   **results_figureS6** contains:
-    -   results of `codes_figureS6/distributional_assumpution.R`:
-        -   `pval_distri_H0_dip.csv`
-        -   `pval_distri_H0_SI.csv`
+    -   results of `codes_figureS5/sample_size.R`:
+        -   `merge_selective_inference_4cl_d=0.csv`
+        -   `mutlimod_d=0.csv`
+        -   `mutlimod_d=5.csv`
+        -   `selective_inference_2cl_d=0.csv`
+        -   `selective_inference_2cl_d=5.csv`
+        -   `selective_inference_4cl_d=0.csv`
+        -   `selective_inference_4cl_d=5.csv`
+        -   `ttest_d=0.csv`
+        -   `ttest_d=5.csv`
+-   **results_figureS7** contains:
+-   results of `codes_figureS7/distributional_assumpution.R`:
+    -   `pval_distri_H0_dip.csv`
+    -   `pval_distri_H0_SI.csv`
+-   **results_sectionS3** contains $3$ folders:
+    -   `p=4` with the results of simulations where the number of
+        dimensions was equal to $4$
+    -   `p=10` with the results of simulations where the number of
+        dimensions was equal to $10$
+    -   `time` with the results of the computational times of each tests
 
 #### figures-codes
 
@@ -245,12 +253,12 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] compiler_4.2.1     pillar_1.8.1       tools_4.2.1        mclust_6.0.0      
-    ##  [5] digest_0.6.30      evaluate_0.18      lifecycle_1.0.3    tibble_3.1.8      
+    ##  [5] digest_0.6.31      evaluate_0.19      lifecycle_1.0.3    tibble_3.1.8      
     ##  [9] gtable_0.3.1       pkgconfig_2.0.3    rlang_1.0.6        igraph_1.3.5      
     ## [13] cli_3.4.1          rstudioapi_0.14    yaml_2.3.6         xfun_0.35         
-    ## [17] fastmap_1.1.0      stringr_1.4.1      dplyr_1.0.10       knitr_1.41        
+    ## [17] fastmap_1.1.0      stringr_1.5.0      dplyr_1.0.10       knitr_1.41        
     ## [21] generics_0.1.3     vctrs_0.5.1        cowplot_1.1.1      grid_4.2.1        
     ## [25] tidyselect_1.2.0   glue_1.6.2         R6_2.5.1           fansi_1.0.3       
     ## [29] GoFKernel_2.1-1    rmarkdown_2.18     ggplot2_3.4.0      magrittr_2.0.3    
-    ## [33] scales_1.2.1       htmltools_0.5.3    colorspace_2.0-3   KernSmooth_2.23-20
+    ## [33] scales_1.2.1       htmltools_0.5.4    colorspace_2.0-3   KernSmooth_2.23-20
     ## [37] utf8_1.2.2         stringi_1.7.8      munsell_0.5.0

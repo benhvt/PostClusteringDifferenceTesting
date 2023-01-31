@@ -73,11 +73,13 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
   - `adj_pval_comp.R`
   - `power_comp_merge.R` 
 
-* **codes_figureS5** contains simulation codes for Figure S5: Evaluation of the computational times of our three proposed tests.
-  - `time.R`
+* **codes_figureS5** contains simulation codes for Figure S5: Additional simulation studies to evaluate the impact of the sample size.
+  - `sample_size.R`
 
-* **codes_figureS6** contains simulation codes for Figure S6: Impact of a miss-specification of the distributional assumption under the null.
+* **codes_figureS7** contains simulation codes for Figure S7: Impact of a miss-specification of the distributional assumption under the null.
   - `distributional_assumption.R` 
+
+* **codes_sectionS3** contains simulations codes for all the Supplementary Section S3
 
 #### simulations-results 
 
@@ -115,19 +117,26 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
     - `power_comp_merge_harm.csv`
 
 * **results_figureS5** contains:
-  - results of `codes_figureS5/time.R`:
-    - `time_dip_2cl.csv`
-    - `time_dip_4cl.csv`
-    - `time_SI_2cl.csv`
-    - `time_SI_4cl.csv`
-    - `time_merge_2cl.csv`
-    - `time_merge_4cl.csv`
+  - results of `codes_figureS5/sample_size.R`:
+    - `merge_selective_inference_4cl_d=0.csv`
+    - `mutlimod_d=0.csv`
+    - `mutlimod_d=5.csv`
+    - `selective_inference_2cl_d=0.csv`
+    - `selective_inference_2cl_d=5.csv`
+    - `selective_inference_4cl_d=0.csv`
+    - `selective_inference_4cl_d=5.csv`
+    - `ttest_d=0.csv`
+    - `ttest_d=5.csv`
 
-* * **results_figureS6** contains:
-  - results of `codes_figureS6/distributional_assumpution.R`:
+*  **results_figureS7** contains:
+  - results of `codes_figureS7/distributional_assumpution.R`:
     - `pval_distri_H0_dip.csv`
     - `pval_distri_H0_SI.csv`
-
+    
+* **results_sectionS3** contains $3$ folders: 
+  - `p=4` with the results of simulations where the number of dimensions was equal to $4$
+  - `p=10` with the results of simulations where the number of dimensions was equal to $10$
+  - `time` with the results of the computational times of each tests 
 
 #### figures-codes
 Contains codes to generate the figures presented in the Web Appendix. 

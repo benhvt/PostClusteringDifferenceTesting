@@ -1,118 +1,99 @@
-# Figure S5
-
+rm(list = ls())
 library(ggplot2)
 library(RColorBrewer)
 library(wesanderson)
-library(viridis)
 library(paletteer)
 library(patchwork)
 library(cowplot)
 library(dplyr)
-library(ggcorrplot)
+library(kableExtra)
 library(latex2exp)
-library(multimode)
-source(file = "utils.R")
-
+library(ggpattern)
 theme_set(theme_bw())
-pal <- wes_palette("Darjeeling1", 3, type = "continuous")
-pal2 <- c(wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
 
-p <- c(2:10, 25, 50)
-nsimu <- 500
-
-# Results over 500 simulations of the data 
-time_dip_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_dip_2cl.csv")
-time_dip_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_dip_4cl.csv")
-
-time_SI_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_SI_2cl.csv")
-time_SI_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_SI_4cl.csv")
-
-time_merge_2cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_merge_2cl.csv")
-time_merge_4cl <- read.csv(file = "supplementary/simulations-results/results_figureS5/time_merge_4cl.csv")
-time_merge_4cl$V11 <- 60*time_merge_4cl$V11 #Min -> sec
+#-- Simulations parameters
+nsimu <- 1000
+alpha <- 0.05
 
 
-time_dip_2cl$Method <- time_dip_4cl$Method <- "Multimodality test"
-time_SI_2cl$Method <- time_SI_4cl$Method <- "Selective inference (Direct)"
-time_merge_2cl$Method <- time_merge_4cl$Method <- "Selective inference (Harmonic mean)"
+################################################################################
+#--------------- Impact of the sample size on Type I and Power ----------------#
+################################################################################
 
-time_dip_2cl$NbCluster <- time_SI_2cl$NbCluster <- time_merge_2cl$NbCluster <- "2 clusters"
-time_dip_4cl$NbCluster <- time_SI_4cl$NbCluster <- time_merge_4cl$NbCluster <- "4 clusters"
+pal <- wesanderson::wes_palette("Darjeeling1", 3, type = "continuous")
+pal2 <- c(wesanderson::wes_palette("GrandBudapest2", 2, type = "continuous"), "#cad3fa", pal[2])
 
-p.df <- c()
-
-for (i in 1:length(p)){
-  p.df <- c(p.df, rep(p[i], 6*nsimu))
-}
-time_res <- rbind(time_dip_2cl,
-                  time_SI_2cl,
-                  time_merge_2cl,
-                  time_dip_4cl,
-                  time_SI_4cl,
-                  time_merge_4cl)
-
-time.df <- data.frame(Time = as.numeric(as.matrix(time_res[,1:11])),
-                      Method = rep(time_res$Method, length(p)),
-                      NbCluster = rep(time_res$NbCluster, length(p)), 
-                      p = as.factor(rep(p.df, 6)))
+pal_illu <- c("#399283", "#e1d936", "#e09c6c", "#dc3c07")
 
 
-p_time <- ggplot(time.df) + aes(x=p, y=Time, colour = Method) + geom_boxplot() + facet_wrap(~NbCluster) +
-  scale_colour_manual(values = pal2, 
-                      labels = c("Multimodality test",
-                                 "Selective test (direct)", 
-                                 "Merging selective test"))  +
-  scale_y_continuous(trans = "log10") +
-  xlab("Number of dimensions (p)") +
-  ylab("Time for one test (sec)
-       log10 scale") +
-  theme(legend.position = "bottom",
-        axis.title = element_text(size = 14))
+#1./ Impact on the type I error rate 
 
-p_mean_time <- time.df %>% group_by(Method, NbCluster, p) %>% 
-  summarise(Mean_Time = mean(Time)) %>%
-  mutate(p=as.numeric(as.character(p))) %>%
-  ggplot() + 
-  aes(x=p, y=Mean_Time, colour = Method, linetype = Method, shape = Method) + 
-  geom_point(size = 2.5) + 
-  geom_line(size = 1.2) +
-  scale_y_continuous(trans = "log10") +
-  scale_x_continuous(trans = "log10") +
-  annotation_logticks(sides = "lb") +
-  scale_colour_manual(values = pal2, 
-                      labels = c("Multimodality test",
-                                 "Selective test (direct)", 
-                                 "Merging selective test"))  +
-  scale_linetype_manual(values = c("dotted", "solid", "dashed"),
-                        labels = c("Multimodality test",
-                                   "Selective test (direct)", 
-                                   "Merging selective test")) +
-  scale_shape_manual(name = "Method",
-                     labels = c("Multimodality test",
-                                "Selective test (direct)", 
-                                "Merging selective test"),
-                     values = c(15,16, 17)) +
-  facet_wrap(~NbCluster) +
-  xlab("Number of dimensions (p)
-       log10 scale") +
-  ylab("Mean time to perform one test (sec)
-       log10 scale") +
-  theme(legend.position = "bottom",
-        axis.title = element_text(size = 14),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size=14),
-        legend.box="vertical") 
+nocluster_csv <- list.files("supplementary/simulations-results/results_figureS5/", pattern = c("d=0",".csv"), full.names = TRUE)
+nocluster <- lapply(nocluster_csv, readr::read_csv)
 
-p_mean_time
+nocluster_df <- dplyr::bind_rows(nocluster)
+nocluster_df <- nocluster_df[,-1]
+nocluster_df$Test <- rep(c("Merging test", "Multimodality test", "Selective test (K=2)", "Selective test (K=4)", "t-test"), each = nsimu)
 
-p_res_time <- p_time / p_mean_time +
-  plot_layout(heights = c(1, 1.5),
-              widths = c(2,1)) +
-  plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face = "bold", size = 14))
+FP_df <-nocluster_df %>% group_by(Test) %>% summarise(across(colnames(nocluster_df)[1:9], function(x){mean(x<0.05, na.rm = T)}))
+FP_df2 <- data.frame("False Positive rate"=c(FP_df$`n=10`, FP_df$`n=15`, FP_df$`n=20`, FP_df$`n=25`, FP_df$`n=30`, FP_df$`n=50`, FP_df$`n=75`, FP_df$`n=100`, FP_df$`n=500`),
+                     Sample_size = rep(c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500"), each = 5),
+                     Test = rep(FP_df$Test, 9), check.names = F)
+plt2.FP <- FP_df2 %>% ggplot() +
+  aes(x=factor(Sample_size, levels =c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500")), y= `False Positive rate`, colour = Test, 
+      group = Test) +
+  geom_point(size = 3)+
+  geom_line(linewidth = .8) +
+  scale_colour_manual(name = "Test",
+                      values = c(pal2[3], pal2[1], pal2[2], "#2e3b55", pal2[4])) +
+  ylim(c(0,1)) +
+  ggnewscale::new_scale_colour() +
+  geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
+  scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
+  xlab("Sample Size") +
+  ylab("False Positive Rate at the 5% level") +
+  theme(axis.text.x = element_text(angle = 45, hjust =1))
 
-p_res_time
+#2./ Impact on the statistical power
+cluster_csv <- list.files("supplementary/simulations-results/results_figureS5/", pattern = c("d=5",".csv"), full.names = TRUE)
+cluster <- lapply(cluster_csv, readr::read_csv)
 
-ggsave(p_res_time, filename = "supplementary/figures/FigureS5.pdf", dpi = 600, width = 150, height = 225, units = "mm")
-ggsave(p_mean_time, filename = "supplementary/figures/FigureS5V2.pdf", dpi = 600, width = 225, height = 125, units = "mm")
-  
+cluster_df <- dplyr::bind_rows(cluster)
+cluster_df <- cluster_df[,-1]
+cluster_df$Test <- rep(c("Merging test", "Multimodality test", "Selective test (K=2)", "Selective test (K=4)", "t-test"), each = nsimu)
+
+
+power_df <-cluster_df %>% group_by(Test) %>% summarise(across(colnames(cluster_df)[1:9], function(x){mean(x<0.05, na.rm = T)}))
+power_df2 <- data.frame("Power"=c(power_df$`n=10`, power_df$`n=15`, power_df$`n=20`, power_df$`n=25`, power_df$`n=30`, power_df$`n=50`, power_df$`n=75`, power_df$`n=100`, power_df$`n=500`),
+                        Sample_size = rep(c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500"), each = 5),
+                        Test = rep(power_df$Test, 9), check.names = F)
+plt2.pow <- power_df2 %>% ggplot() +
+  aes(x=factor(Sample_size, levels =c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500")), y= `Power`, colour = Test, 
+      group = Test) +
+  geom_point(size = 3)+
+  geom_line(linewidth = .8) +
+  scale_colour_manual(name = "Test",
+                      values = c(pal2[3], pal2[1], pal2[2], "#2e3b55", pal2[4])) +
+  ylim(c(0,1)) +
+  ggnewscale::new_scale_colour() +
+  geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
+  scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
+  xlab("Sample Size") +
+  ylab("Statistical power at the 5% level") +
+  theme(axis.text.x = element_text(angle = 45, hjust =1))
+
+plt.res <- plt2.FP + plt2.pow + plot_layout(guides = "collect") &
+  plot_annotation(tag_levels = "A") &
+  theme(plot.tag = element_text(face = 'bold'),
+        legend.position = "bottom",
+        text = element_text(size = 14))
+
+
+ggsave(plt.res, filename = "supplementary/figures/FigureS5.pdf",
+       width = 300,
+       height = 125,
+       units = "mm",
+       dpi = 600)
+
+
+
