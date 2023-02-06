@@ -11,6 +11,7 @@ library(patchwork)
 library(cowplot)
 library(dplyr)
 library(latex2exp)
+library(ggpattern)
 theme_set(theme_bw())
 source(file = "utils.R")
 
@@ -211,21 +212,39 @@ power_nbvar10_delta3_df2 <- data.frame("Power"=as.numeric(unlist(power_nbvar10_d
 power_df <- rbind(power_nbvar4_delta3_df2, power_nbvar4_detla5_df2,
                   power_nbvar10_delta3_df2, power_nbvar10_delta5_df2)
 
-plt2_p_pow <- power_df %>% group_by(p, Test, d) %>% summarise(Mean_power = mean(`Power`)) %>%
-  ggplot() + aes(x=Test, y = Mean_power, fill = factor(p, levels = c("p=4", "p=10")), pattern = d) + 
-  geom_bar_pattern(position = position_dodge(preserve = "single"), stat="identity",
-                   color = "black", 
-                   pattern_fill = "grey40",
-                   pattern_color = "grey40",
-                   pattern_angle = 45,
-                   pattern_density = 0.1,
-                   pattern_spacing = 0.025,
-                   pattern_key_scale_factor = 0.6) +
+# plt2_p_pow <- power_df %>% group_by(p, Test, d) %>% summarise(Mean_power = mean(`Power`)) %>%
+#   ggplot() + aes(x=Test, y = Mean_power, fill = factor(p, levels = c("p=4", "p=10")), pattern = d) + 
+#   geom_bar_pattern(position = position_dodge(preserve = "single"), stat="identity",
+#                    color = "black", 
+#                    pattern_fill = "grey40",
+#                    pattern_color = "grey40",
+#                    pattern_angle = 45,
+#                    pattern_density = 0.1,
+#                    pattern_spacing = 0.025,
+#                    pattern_key_scale_factor = 0.6) +
+#   scale_fill_manual(name = "Number of variables",
+#                     values =  colorRampPalette(c("#0066CC","#FFFFFF","#FF8C00"))(4)[c(2,3)]) +
+#   scale_pattern_manual(name = TeX(r'(Mean difference $\delta$)'),
+#                        values = c(`ẟ=3` = "stripe", `ẟ=5` = "none"),
+#                        labels = c(TeX(r'($\delta=3$)'), TeX(r'($\delta=5$)'))) +
+#   geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
+#   scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
+#   # scale_y_log10() +
+#   annotation_logticks(sides = "l") +
+#   xlab("Test") +
+#   ylab("Overall Power") +
+#   guides(pattern = guide_legend(override.aes = list(fill = "white")),
+#          fill = guide_legend(override.aes = list(pattern = "none"))) +
+#   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust =1))
+# 
+
+
+plt2_p_pow <-power_df %>% group_by(p, Test, d) %>% summarise(Mean_power = mean(`Power`)) %>%
+  mutate(d = factor(d, labels = c(TeX(r'($delta=3$)'), TeX(r'($\delta=5$)')))) %>%
+  ggplot() + aes(x=Test, y = Mean_power, fill = factor(p, levels = c("p=4", "p=10"))) + 
+  geom_bar(stat="identity", position = "dodge", color = "grey40") +
   scale_fill_manual(name = "Number of variables",
                     values =  colorRampPalette(c("#0066CC","#FFFFFF","#FF8C00"))(4)[c(2,3)]) +
-  scale_pattern_manual(name = TeX(r'(Mean difference $\delta$)'),
-                       values = c(`ẟ=3` = "stripe", `ẟ=5` = "none"),
-                       labels = c(TeX(r'($\delta=3$)'), TeX(r'($\delta=5$)'))) +
   geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
   scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
   # scale_y_log10() +
@@ -234,23 +253,25 @@ plt2_p_pow <- power_df %>% group_by(p, Test, d) %>% summarise(Mean_power = mean(
   ylab("Overall Power") +
   guides(pattern = guide_legend(override.aes = list(fill = "white")),
          fill = guide_legend(override.aes = list(pattern = "none"))) +
-  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust =1))
-
+  theme_light() +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust =1)) + 
+  facet_wrap(~d, labeller = label_parsed)
 
 plt.res_p <-(plt2_p_FP | plt2_p_pow) +
+  plot_layout(guides = "collect") &
   plot_annotation(tag_levels = "A") &
   theme(plot.tag = element_text(face = 'bold'),
         text = element_text(size = 15),
         legend.position = "right") 
 
-ggsave(plt.res_p, filename = "supplementary/figures/FigureSectionS3.2.pdf",
+ggsave(plt.res_p, filename = "supplementary/figures/FigureSectionS3.2_V2.pdf",
        width = 350,
        height = 125,
        units = "mm",
        dpi = 600)
 
 
-#3./ Impact of the numbers of variables on the computational time 
+   #3./ Impact of the numbers of variables on the computational time 
 
 theme_set(theme_bw())
 pal <- wes_palette("Darjeeling1", 3, type = "continuous")
