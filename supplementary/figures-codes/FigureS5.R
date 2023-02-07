@@ -37,20 +37,22 @@ nocluster_df$Test <- rep(c("Merging test", "Multimodality test", "Selective test
 
 FP_df <-nocluster_df %>% group_by(Test) %>% summarise(across(colnames(nocluster_df)[1:9], function(x){mean(x<0.05, na.rm = T)}))
 FP_df2 <- data.frame("False Positive rate"=c(FP_df$`n=10`, FP_df$`n=15`, FP_df$`n=20`, FP_df$`n=25`, FP_df$`n=30`, FP_df$`n=50`, FP_df$`n=75`, FP_df$`n=100`, FP_df$`n=500`),
-                     Sample_size = rep(c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500"), each = 5),
+                     Sample_size = rep(c(10, 15, 20, 25, 30, 50, 75, 100, 500), each = 5),
                      Test = rep(FP_df$Test, 9), check.names = F)
 plt2.FP <- FP_df2 %>% ggplot() +
-  aes(x=factor(Sample_size, levels =c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500")), y= `False Positive rate`, colour = Test, 
+  aes(x=Sample_size, y= `False Positive rate`, colour = Test, 
       group = Test) +
-  geom_point(size = 3)+
-  geom_line(linewidth = .8) +
+  geom_point(size = 3, alpha = .8)+
+  geom_line(linewidth = .8, alpha = .8) +
   scale_colour_manual(name = "Test",
                       values = c(pal2[3], pal2[1], pal2[2], "#2e3b55", pal2[4])) +
   ylim(c(0,1)) +
+  scale_x_log10() +
+  annotation_logticks(sides = "b") +
   ggnewscale::new_scale_colour() +
   geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
   scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
-  xlab("Sample Size") +
+  xlab("Sample Size (n)") +
   ylab("False Positive Rate at the 5% level") +
   theme(axis.text.x = element_text(angle = 45, hjust =1))
 
@@ -65,20 +67,22 @@ cluster_df$Test <- rep(c("Merging test", "Multimodality test", "Selective test (
 
 power_df <-cluster_df %>% group_by(Test) %>% summarise(across(colnames(cluster_df)[1:9], function(x){mean(x<0.05, na.rm = T)}))
 power_df2 <- data.frame("Power"=c(power_df$`n=10`, power_df$`n=15`, power_df$`n=20`, power_df$`n=25`, power_df$`n=30`, power_df$`n=50`, power_df$`n=75`, power_df$`n=100`, power_df$`n=500`),
-                        Sample_size = rep(c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500"), each = 5),
+                        Sample_size = rep(c(10, 15, 20, 25, 30, 50, 75, 100, 500), each = 5),
                         Test = rep(power_df$Test, 9), check.names = F)
 plt2.pow <- power_df2 %>% ggplot() +
-  aes(x=factor(Sample_size, levels =c("n=10", "n=15", "n=20","n=25", "n=30", "n=50", "n=75", 'n=100', "n=500")), y= `Power`, colour = Test, 
+  aes(x=Sample_size, y= `Power`, colour = Test, 
       group = Test) +
-  geom_point(size = 3)+
-  geom_line(linewidth = .8) +
+  geom_point(size = 3, alpha = .8) +
+  geom_line(linewidth = .8, alpha = .8) +
   scale_colour_manual(name = "Test",
                       values = c(pal2[3], pal2[1], pal2[2], "#2e3b55", pal2[4])) +
   ylim(c(0,1)) +
+  scale_x_log10() +
+  annotation_logticks(sides = "b") +
   ggnewscale::new_scale_colour() +
   geom_hline(aes(yintercept = 0.05, colour = "5% Nominal Level"), linetype = "dotted", linewidth = 1.3) +
   scale_colour_manual(name = "", values = NatParksPalettes::natparks.pals(name = "Volcanoes", n=6)[5]) +
-  xlab("Sample Size") +
+  xlab("Sample Size (n)") +
   ylab("Statistical power at the 5% level") +
   theme(axis.text.x = element_text(angle = 45, hjust =1))
 
