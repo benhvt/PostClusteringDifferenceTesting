@@ -19,6 +19,9 @@ Contains all simulations codes to reproduce the main Figures in the article.
 
 * `simulation_figure3.R` produces the results displayed in Figure 3: Statistical power of the proposed tests.
 
+* `simulation_fiure4.R` produces the results displayed in Figure 4: Post-clustering inference is primarily influenced by the data structure rather than the choice of clustering algorithm (to be run $1000$ times)
+
+
 ### simulations-results
 
 Contains sub-folder with the simulations results of the **simulations-codes** folder: 
@@ -76,8 +79,12 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
 * **codes_figureS5** contains simulation codes for Figure S5: Additional simulation studies to evaluate the impact of the sample size.
   - `sample_size.R`
 
-* **codes_figureS7** contains simulation codes for Figure S7: Impact of a miss-specification of the distributional assumption under the null.
+* **codes_figuresS6** contains simulation codes for Figure S6: Post-clustering tests outperform feature selection method for clustering
+
+* **codes_figureS8** contains simulation codes for Figure S7: Impact of a miss-specification of the distributional assumption under the null.
   - `distributional_assumption.R` 
+  
+* **codes_figureS9** contains simulation codes for Figure S9: Skew distribution simulation
 
 * **codes_sectionS3** contains simulations codes for all the Supplementary Section S3
 
@@ -128,8 +135,8 @@ Contains codes to reproduce simulations and figures of the Web Appendix.
     - `ttest_d=0.csv`
     - `ttest_d=5.csv`
 
-*  **results_figureS7** contains:
-  - results of `codes_figureS7/distributional_assumpution.R`:
+*  **results_figureS8** contains:
+  - results of `codes_figureS8/distributional_assumpution.R`:
     - `pval_distri_H0_dip.csv`
     - `pval_distri_H0_SI.csv`
     
