@@ -11,8 +11,8 @@ hcl2 <- function(x){
 }
 
 #Filename 
-filename_rH0_SI <- paste0("supplementary/simulations-results/results_figureS6/pval_distri_H0_SI", ".csv")
-filename_rH0_dip <- paste0("supplementary/simulations-results/results_figureS6/pval_distri_H0_dip", ".csv")
+filename_rH0_SI <- paste0("supplementary/simulations-results/results_figureS8/pval_distri_H0_SI", ".csv")
+filename_rH0_dip <- paste0("supplementary/simulations-results/results_figureS8/pval_distri_H0_dip", ".csv")
 
 
 

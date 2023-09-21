@@ -1,4 +1,4 @@
-# Figure S7
+# Figure S8
 
 library(ggplot2)
 library(RColorBrewer)
@@ -120,7 +120,7 @@ p_distri <- p_illu_distri + p_distri_H0_qq + plot_layout(guides = "collect") +
 #                       labels = "AUTO") 
 p_distri
 
-ggsave(p_distri, filename = "supplementary/figures/FigureS7.pdf", 
+ggsave(p_distri, filename = "supplementary/figures/FigureS8.pdf", 
        dpi = 600, 
        width = 300, 
        height = 200, 
