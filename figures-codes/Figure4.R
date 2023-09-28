@@ -42,7 +42,7 @@ plt_indicator <- ggplot(gaussian_results) +
                                                        "k-means", 
                                                        "MClust", 
                                                        "Fuzzy c-means"))~Scenario+delta, labeller = labeller(.cols = label_parsed)) +
-  ylab("Proportion of selection") +
+  ylab("Variable selection") +
   theme_light() +
   theme(text = element_text(size = 22),
         legend.position = "bottom", 
@@ -57,6 +57,7 @@ plt_ari <- do.call("rbind.data.frame", gaussian_results_read) %>%
   summarise(ARI = mean(ARI, na.rm = T)) %>%
   mutate(Scenario = gsub("S", "Scenario ", Scenario)) %>%
   mutate(Scenario = gsub("7", "2", Scenario)) %>%
+  mutate(delta = paste0("delta==", delta)) %>%
   ggplot() + aes(x=delta, y=ARI, colour= factor(Clustering, levels = c("CAH",
                                                                        "k-means",
                                                                        "MClust", 
@@ -77,7 +78,11 @@ plt_ari <- do.call("rbind.data.frame", gaussian_results_read) %>%
                                  "Fuzzy c-means")) +
   theme_light() +
   xlab(TeX(r'($\delta$)')) +
-  theme( text = element_text(size = 22),
+  scale_x_discrete(labels = c(TeX(r'($\delta$ = 0)'), 
+                              TeX(r'($\delta$ = 2.5)'),
+                              TeX(r'($\delta$ = 4)'),
+                              TeX(r'($\delta$ = 8)')))+
+  theme(text = element_text(size = 22),
          legend.position = "bottom", 
          axis.text.x = element_text(size = 18),
          axis.text.y = element_text(size = 18),

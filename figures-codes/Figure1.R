@@ -53,6 +53,7 @@ pval_pb.df <- data.frame(pvalues = c(as.numeric(pval_pb),
                          Test = c(rep("t-Test", nsimu), 
                                   rep("Gao et al.", nsimu),
                                   rep("Uniform", nsimu)))
+pval_pb.df$Test = gsub("t-Test", "t-test", pval_pb.df$Test)
 ppb_ECDF <- ggplot(pval_pb.df) + aes(x=-log(pvalues), colour = Test, size = Test) + 
   stat_ecdf() + 
   scale_colour_manual(values = pal_pb) +

@@ -45,7 +45,7 @@ plt_indicator <- ggplot(results) +
                                                     "k-means", 
                                                     "MClust", 
                                                     "Fuzzy c-means"))~Scenario+delta, labeller = labeller(.cols = label_parsed)) +
-  ylab("Proportion of selection") +
+  ylab("Variable selection") +
   theme_light() +
   theme(text = element_text(size = 22),
         legend.position = "bottom", 

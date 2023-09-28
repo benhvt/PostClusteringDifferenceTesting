@@ -5,6 +5,7 @@
 library(ggplot2)
 library(MetBrewer)
 library(dplyr)
+library(patchwork)
 library(latex2exp)
 library(kableExtra)
 
@@ -45,7 +46,7 @@ plt_indicator <- ggplot(results) +
   geom_hline(aes(yintercept = 0.05, colour = "5% nominal levels"), linetype = "dotted", size = 1.5) +
   scale_colour_manual(name = "", values = "#FF7F11") +
   ggh4x::facet_nested(factor(Clustering)~Scenario+delta, labeller = labeller(.cols = label_parsed)) +
-  ylab("Proportion of selection") +
+  ylab("Variable selection") +
   theme_light() +
   theme(text = element_text(size = 18),
         legend.position = "bottom", 
