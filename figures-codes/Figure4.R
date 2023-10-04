@@ -46,7 +46,7 @@ plt_indicator <- ggplot(gaussian_results) +
   theme_light() +
   theme(text = element_text(size = 22),
         legend.position = "bottom", 
-        axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+        axis.text.x = element_text(size = 12, angle = 65, hjust = 1),
         axis.text.y = element_text(size = 14),
         panel.grid = element_blank())
 
@@ -78,10 +78,8 @@ plt_ari <- do.call("rbind.data.frame", gaussian_results_read) %>%
                                  "Fuzzy c-means")) +
   theme_light() +
   xlab(TeX(r'($\delta$)')) +
-  scale_x_discrete(labels = c(TeX(r'($\delta$ = 0)'), 
-                              TeX(r'($\delta$ = 2.5)'),
-                              TeX(r'($\delta$ = 4)'),
-                              TeX(r'($\delta$ = 8)')))+
+  scale_x_discrete(labels = c("0", "2.5", "4", "8")) +
+  guides(colour = guide_legend(override.aes = list(size = 2.5, linewidth = 1, alpha = 1))) +
   theme(text = element_text(size = 22),
          legend.position = "bottom", 
          axis.text.x = element_text(size = 18),

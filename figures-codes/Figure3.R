@@ -43,10 +43,11 @@ ppower_illu <- ggplot(X) +  aes(x=X1, fill = Cluster, colour = Cluster) +
   ylab("Density") +
   xlab(expression(X[1])) +
   theme(legend.position = "bottom",
-        axis.title = element_text(size = 16),
-        strip.text = element_text(size=14),
-        legend.title = element_text(size = 16),
-        legend.text = element_text(size = 14))
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 16),
+        strip.text = element_text(size=16),
+        legend.title = element_text(size = 18),
+        legend.text = element_text(size = 16))
 ppower_illu+ ggtitle("Experiment")
 
 # Results over 2 000 simulations of the data
@@ -99,10 +100,11 @@ ppower_res <- ggplot(powerfig) +
   xlab(TeX(r'($\delta$)')) +
   ylab("Statistical power") +
   theme(legend.position = "bottom",
-        axis.title = element_text(size = 16),
-        strip.text = element_text(size=14),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 16),
+        strip.text = element_text(size=16),
         legend.title = element_text(size = 16),
-        legend.text = element_text(size = 14))
+        legend.text = element_text(size = 16))
 
 ppower_res
 

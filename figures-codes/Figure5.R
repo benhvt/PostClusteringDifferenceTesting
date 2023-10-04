@@ -39,8 +39,8 @@ pspeciesbilllength <- ggplot() + geom_histogram(data = subset(penguins_scale, sp
   geom_density(data = subset(penguins_scale, species == "Gentoo"),
                aes(x=bill_length_mm, y=..density.., colour = species, fill = species),
                alpha = 0.1, size = .8) +
-  scale_colour_manual(name = "", values = pal_dens[3]) +
-  scale_fill_manual(name = "", values = pal_appli[3]) +
+  scale_colour_manual(name = "True classes", values = pal_dens[3]) +
+  scale_fill_manual(name = "True classes", values = pal_appli[3]) +
   ggnewscale::new_scale_colour() +
   ggnewscale::new_scale_fill() +
   geom_histogram(data = subset(penguins_scale, species == "Chinstrap"),
@@ -55,7 +55,9 @@ pspeciesbilllength <- ggplot() + geom_histogram(data = subset(penguins_scale, sp
   ylab("Density") +
   theme_classic() +
   theme(legend.position = "bottom",
-        axis.title = element_text(size = 16))
+        axis.title = element_text(size = 16),
+        legend.title = element_text(size = 16),
+        legend.text = element_text(size = 14))
 
 
 pspeciesbilldepth <- ggplot() + geom_histogram(data = subset(penguins_scale, species == "Adelie"),
@@ -217,8 +219,8 @@ penguins_NA$Cluster <- cutree(dend,k = 3)
 
 penguins_NA$Cluster <- as.factor(penguins_NA$Cluster)
 p_to_leg <- ggplot(penguins_NA) + aes(x=bill_length_mm, fill = Cluster) + geom_histogram() +
-  scale_fill_manual(name = "Estimated cluster", values = pal_clust3) +
-  theme(legend.position = "bottom",
+  scale_fill_manual(name = "Estimated \ncluster", values = pal_clust3) +
+  theme(legend.position = "right",
         legend.text = element_text(size = 14),
         legend.title = element_text(size = 16))
 
@@ -226,19 +228,21 @@ legend_cluster <- get_legend(
   # create some space to the left of the legend
   p_to_leg + theme(legend.box.margin = margin(0, 0, 0, 16)))
 
-legend_fin <- plot_grid(legend, legend_cluster, nrow = 2, vjust = 5.2)
-phistspecies_legend <- plot_grid(phistspecies+theme(legend.position = "none"), legend_fin, nrow = 2, rel_heights = c(5, .9))
+phistspecies_legend <- plot_grid(phistspecies+theme(legend.position = "none"), legend, nrow = 2, rel_heights = c(5, .9))
 
 
 #pal_clust3 <- wes_palette("BottleRocket2", n=3, type = c("discrete"))
 ggd1 <- as.ggdend(dend)
 p_dend <- ggplot(ggd1, theme = theme_classic())+
-  scale_color_manual(values = c(pal_clust3[1], pal_clust3[3], pal_clust3[2], "grey")) +
+  scale_color_manual(values = c(pal_clust3[1], pal_clust3[3], pal_clust3[2], "grey"),
+                     labels = "1":"3") +
   xlab("Observations") +
   ylab("Ward's criterion") +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank(), 
         axis.title = element_text(size = 16))
+
+p_dend_legend <- plot_grid(p_dend, NULL, legend_cluster, rel_widths = c(5,-1,1.5), nrow =1)
 p_perf <- ggplot(penguins_NA) + aes(x=Cluster, fill = species) + 
   geom_bar(position="fill") +
   scale_fill_manual(name = "True Species", values = pal_appli) +
@@ -250,7 +254,6 @@ p_perf <- ggplot(penguins_NA) + aes(x=Cluster, fill = species) +
   xlab("Estimated clusters")
 
 
-p_cluster <- plot_grid(p_dend, p_perf, ncol=2)
 
 # Make figure
 
@@ -258,7 +261,7 @@ p_cluster <- plot_grid(p_dend, p_perf, ncol=2)
 #   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 
 
-p_appli <- phistspecies_legend / (p_dend + p_perf) +
+p_appli <- phistspecies_legend / (p_dend_legend + p_perf) +
   plot_annotation(tag_levels = 'A') & theme(plot.tag = element_text(face = 'bold')) 
 p_appli
-ggsave(p_appli, file = "figures/figure4.pdf", dpi = 600, width = 320, height = 240, units = "mm")
+ggsave(p_appli, file = "figures/figure5.pdf", dpi = 600, width = 320, height = 240, units = "mm")
